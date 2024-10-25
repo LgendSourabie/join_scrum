@@ -1,0 +1,5 @@
+@mixin setFont($fFamily: "Inter", $fWeight: 400, $fSize: 16px) {
+  font-family: $fFamily;
+  font-weight: $fWeight;
+  font-size: $fSize;
+}

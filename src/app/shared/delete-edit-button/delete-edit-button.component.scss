@@ -1,0 +1,60 @@
+.edit-or-delete {
+  display: flex;
+  gap: 2rem;
+  > .btn {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    font-size: 18px;
+    border: transparent;
+    transition: all 250ms ease-in-out;
+    > img {
+      transition: all 250ms ease-in-out;
+    }
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+  > .btn-edit {
+    border: 2px #2a3647 solid;
+    color: #2a3647;
+    border-radius: 10px;
+    background-color: white;
+    font-weight: 700;
+    &:hover {
+      border: 2px #29abe2 solid;
+      color: #33afe3;
+      > span {
+        color: #33afe3;
+        transition: all 250ms ease-in-out;
+      }
+      > img {
+        filter: invert(61%) sepia(99%) saturate(1232%) hue-rotate(166deg)
+          brightness(92%) contrast(93%);
+      }
+    }
+  }
+  > .btn-delete {
+    background-color: #e61c40;
+    color: #2a3647;
+    font-weight: 700;
+    display: flex;
+    justify-content: center;
+    border-radius: 10px;
+    span {
+      color: #2a3647;
+      transition: all 250ms ease-in-out;
+    }
+    &:hover {
+      > span {
+        color: white;
+      }
+      > img {
+        filter: invert(100%) sepia(65%) saturate(2%) hue-rotate(338deg)
+          brightness(112%) contrast(101%);
+      }
+    }
+  }
+}

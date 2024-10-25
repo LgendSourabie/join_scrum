@@ -1,0 +1,80 @@
+.marketing-slogan {
+  padding-inline: 2.5rem;
+  margin-bottom: 2rem;
+  gap: 30px;
+}
+.disp-flex {
+  display: flex;
+  align-items: center;
+}
+.title {
+  font-weight: 700;
+  font-size: 61px;
+  color: #000000;
+  line-height: 73.2px;
+  &::first-letter {
+    text-transform: capitalize;
+  }
+}
+.blue-separator-line {
+  height: 59px;
+  border: 2px solid #29abe2;
+}
+.blue-separator-line-responsive {
+  display: none;
+  width: 115px;
+  border: 3px solid #29abe2;
+  margin-top: 0.5rem;
+}
+
+.slogan {
+  font-size: 27px;
+  line-height: 32.4px;
+  color: #2a3647;
+}
+
+@media screen and (width<1130px) {
+  .slogan {
+    font-size: 24px;
+  }
+}
+
+@media screen and (width<975px) {
+  .title {
+    font-size: 35px;
+  }
+  .slogan {
+    font-size: 24px;
+  }
+}
+@media screen and (width<760px) {
+  .marketing-slogan {
+    flex-direction: column;
+    align-items: unset !important;
+    gap: unset;
+  }
+  .title {
+    margin-top: -7rem;
+    font-size: 32px;
+  }
+  .blue-separator-line {
+    display: none;
+  }
+  .blue-separator-line-responsive {
+    display: block;
+  }
+  .slogan {
+    font-size: 24px;
+  }
+}
+
+@media screen and (width<595px) {
+  .marketing-slogan {
+    animation-name: animateDashboard;
+    animation-duration: 2s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: 1;
+    animation-delay: 1000ms;
+    animation-fill-mode: both;
+  }
+}

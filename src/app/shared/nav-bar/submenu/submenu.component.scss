@@ -1,0 +1,35 @@
+// .d-none {
+//   display: none;
+// }
+
+.submenu-user {
+  padding-inline: 1rem;
+  padding-block: 1rem;
+  border-radius: 20px 0px 20px 20px;
+  background-color: #2a3647;
+  width: fit-content;
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.1);
+  position: absolute;
+  top: 70px;
+  right: 1.5rem;
+  z-index: 2;
+}
+.ft-sz-400 {
+  font-weight: 400;
+}
+
+.submenu-user .list-item:hover {
+  background-color: rgb(41, 60, 85);
+  transform: scale(1.01);
+}
+
+.list-item {
+  display: list-item;
+  text-decoration: none;
+  list-style: none;
+  font-size: 16px;
+  line-height: 19.2px;
+  color: #cdcdcd;
+  padding: 8px 16px 8px 16px;
+  transition: transform 125ms ease-in-out;
+}

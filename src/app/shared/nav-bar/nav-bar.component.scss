@@ -1,0 +1,66 @@
+.disp-flex {
+  display: flex;
+  align-items: center;
+}
+.menu {
+  height: 70px;
+  background-color: white;
+  box-shadow: 0px 0 6px 0 rgba(0, 0, 0, 0.2);
+  justify-content: space-between;
+  padding-inline: 4rem;
+  position: sticky;
+  top: 0;
+  z-index: 99;
+}
+.menu-icons-group {
+  gap: 1rem;
+}
+.btn-help {
+  background-color: transparent;
+  border: none;
+}
+
+.mobile-logo {
+  display: none;
+  width: 2rem;
+  height: auto;
+  object-fit: cover;
+}
+
+.kanban-tool {
+  font-size: 20px;
+  line-height: 24px;
+  color: #2a3647;
+  transition: transform 125ms ease-in-out;
+}
+.login {
+  border-radius: 50%;
+  width: 2rem;
+  height: 2rem;
+  border: 2px solid #2a3647;
+  color: #29abe2;
+  font-weight: 700;
+  font-size: 16px;
+  &:hover {
+    background-color: #d5e5fe;
+  }
+}
+
+@media (width<=855px) {
+  .kanban-tool {
+    font-size: 17px;
+  }
+
+  .menu {
+    padding-inline: 1rem;
+  }
+}
+
+@media (width<=760px) {
+  .kanban-tool {
+    display: none;
+  }
+  .mobile-logo {
+    display: block;
+  }
+}

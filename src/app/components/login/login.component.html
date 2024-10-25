@@ -1,0 +1,100 @@
+<section class="login-body disp-flex">
+  <img class="login-logo" src="assets/icons/logoBlue.svg" alt="Logo" />
+  <div class="container-login">
+    <div class="menu-login">
+      <div class="icon-links-login">
+        <span class="question-user">Not a Join user?</span>
+        <button onclick="userAction('signup')" class="sign-up blue-btn">
+          Sign up
+        </button>
+      </div>
+    </div>
+    <form
+      class="user-log-data-section disp-flex"
+      onsubmit="onLogIn();return false"
+      novalidate
+    >
+      <div class="title-join-underline disp-flex">
+        <div class="log-title">Log in</div>
+        <div class="btm-bar"></div>
+      </div>
+      <div class="input-grp-section disp-flex">
+        <div class="grp-input-login disp-flex">
+          <div class="inp-ctn">
+            <div class="inpt-mail-icon-grp ps-rel-mail">
+              <input
+                id="email"
+                class="input-login input-login-1"
+                type="email"
+                placeholder="Email"
+                required
+                pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}"
+              />
+              <button type="button" class="icon-btn-login mail-btn-pointer-pos">
+                <img
+                  class="mail-icon-login"
+                  src="assets/icons/mail.svg"
+                  alt="Email"
+                />
+              </button>
+            </div>
+            <p id="emailError"></p>
+          </div>
+
+          <div class="inp-ctn">
+            <div class="inpt-mail-icon-grp ps-rel-pwd">
+              <input
+                id="password"
+                class="input-login input-login-2"
+                type="password"
+                placeholder="Password"
+                minlength="4"
+                required
+                oninput="handlePwdIcon('password','lock-img-field')"
+              />
+              <button
+                type="button"
+                class="icon-btn-login pwd-btn-pos"
+                onclick="showPassword('password') ;toggleVisibleIcon('lock-img-field')"
+              >
+                <img
+                  id="lock-img-field"
+                  src="assets/icons/lock.svg"
+                  alt="Password"
+                />
+              </button>
+            </div>
+            <p id="passwordError"></p>
+          </div>
+        </div>
+        <div class="remember-line disp-flex ft-sz-400">
+          <div class="remember-me disp-flex">
+            <img
+              id="checkbox-login"
+              src="assets/icons/checkboxUncheck.svg"
+              alt="check"
+              onclick="checkButton('checkbox-login','assets/icons/checkboxUncheck.svg','assets/icons/checkboxChecked.svg')"
+            />
+            <span class="remember ft-sz-400">Remember me</span>
+          </div>
+          <span class="forgot-pwd">I forgot my password</span>
+        </div>
+      </div>
+
+      <div class="btn-line disp-flex">
+        <button type="submit" class="blue-btn log-guest-btn">Log in</button>
+        <a href="summary.html" class="white-btn log-guest-btn">Guest Log in</a>
+      </div>
+    </form>
+    <div class="privacy-link-login">
+      <a class="links-login ft-sz-400" onclick="userAction('privacy_login')"
+        >Privacy Policy</a
+      >
+      <a
+        class="links-login ft-sz-400 legal-notice"
+        onclick="userAction('legal_notice_login')"
+        >Legal Notice</a
+      >
+    </div>
+  </div>
+</section>

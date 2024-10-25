@@ -1,0 +1,129 @@
+.todosplit {
+  width: 17rem;
+  margin-bottom: -1rem;
+}
+
+.todoscontainer {
+  width: 100%;
+  padding-top: 2.25rem;
+  border-radius: 10px;
+  cursor: pointer;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  user-select: none;
+  padding-inline: 0.175rem;
+}
+
+.todoscontainer {
+  cursor: grabbing;
+  cursor: -webkit-grabbing;
+}
+
+.todoscontainer::-webkit-scrollbar {
+  opacity: 0;
+}
+.subtasks-progress-description {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.todocard {
+  background-color: white;
+  gap: 1rem;
+  border-radius: 1.5rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  box-shadow: 0px 0px 2px 2px #00000014;
+}
+
+.todocard span:not(.percentage) {
+  color: #a8a8a8;
+}
+
+.todocardbutton {
+  background-color: #1fd7c1;
+  color: white;
+  width: 9rem;
+  height: 27px;
+  padding: 0.25rem 1rem 0.25rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 400;
+  font-size: 1rem;
+  border: none;
+}
+
+.progress-container {
+  height: 8px;
+  width: 8rem;
+  border-radius: 0.4rem;
+  background: #f4f4f4;
+  margin-right: 1rem;
+}
+
+.progress-container .progress {
+  height: 100%;
+  width: 0;
+  border-radius: 0.4rem;
+
+  background: #4589ff;
+
+  transition: width 0.4s ease;
+}
+
+.subtasks {
+  height: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.assignedprio {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.assignedprio button:not(:first-child):not(:nth-child(6)) {
+  margin-left: -20px;
+}
+
+.btn-name-initials {
+  background: chartreuse;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: 700;
+  border: 2px solid white;
+  margin-right: 8px;
+}
+
+.btn {
+  max-height: 240px;
+}
+
+@media (width<=800px) {
+  .todosplit {
+    width: 100%;
+    height: fit-content;
+    margin-right: 0;
+    width: 100%;
+  }
+  .progress-container {
+    width: 22rem;
+  }
+
+  .todoscontainer {
+    padding-top: 1.25rem;
+    min-height: fit-content;
+    display: flex;
+    gap: 1rem;
+  }
+
+  .todocard {
+    min-width: 271px;
+  }
+}

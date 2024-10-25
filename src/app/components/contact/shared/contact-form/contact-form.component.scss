@@ -1,0 +1,88 @@
+.add-contact-data-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  max-width: 350px;
+  width: 330px;
+  > .add-contact-input-container {
+    position: relative;
+    display: flex;
+    height: 40px;
+    align-items: center;
+    > .add-contact-input {
+      border: 1px #d1d1d1 solid;
+      border-radius: 10px;
+      font-size: 16px;
+      height: 100%;
+      width: 100%;
+      padding: 6px 21px;
+    }
+    > img {
+      position: absolute;
+      right: 1rem;
+    }
+  }
+
+  > .buttons-create-contact {
+    display: flex;
+    gap: 2rem;
+    > .btn {
+      padding: 0.63rem 1rem;
+      border-radius: 10px;
+      font-size: 18px;
+      border: transparent;
+      transition: all 250ms ease-in-out;
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+    > .btn-cancel {
+      border: 1px #2a3647 solid;
+      color: #2a3647;
+      border-radius: 10px;
+      background-color: white;
+      &:hover {
+        border: 1px #29abe2 solid;
+        color: #33afe3;
+      }
+    }
+    > .btn-create {
+      background-color: #2a3647;
+      color: white;
+      font-weight: 700;
+      display: flex;
+      justify-content: center;
+      border-radius: 10px;
+      &:hover {
+        background-color: #33afe3;
+      }
+    }
+  }
+}
+
+@media screen and (width<1105px) {
+  :host {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-inline: 1.5rem;
+  }
+
+  .add-contact-data-inputs {
+    margin-bottom: 2rem;
+    width: 90vw;
+    > .buttons-create-contact {
+      justify-content: center;
+    }
+  }
+}
+
+@media (width<=370px) {
+  .add-contact-data-inputs {
+    .buttons-create-contact {
+      > .btn {
+        font-size: 13px;
+      }
+    }
+  }
+}
