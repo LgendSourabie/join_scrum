@@ -1,6 +1,13 @@
 <div class="marketing-slogan disp-flex">
   <div class="title">{{ title }}</div>
   <div class="blue-separator-line"></div>
-  <div class="slogan ft-sz-400">Key Metrics at a Glance</div>
+  <div class="slogan ft-sz-400">Better with team</div>
   <div class="blue-separator-line-responsive"></div>
+  <button
+    (click)="onViewReset('contact-list')"
+    class="return-btn"
+    *ngIf="viewName === 'contact-infos'"
+  >
+    <img id="return-btn" src="assets/icons/arrow-left-line.svg" alt="Exit" />
+  </button>
 </div>

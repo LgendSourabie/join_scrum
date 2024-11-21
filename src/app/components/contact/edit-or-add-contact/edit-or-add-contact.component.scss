@@ -13,6 +13,34 @@
   }
 }
 
+.slideInNewContact {
+  transform: translate(80%, -50%);
+  animation: slideInContact 250ms ease-in-out 1 normal both;
+}
+
+.slideOutNewContact {
+  transform: translate(-50%, -50%);
+  animation: slideOutContact 250ms ease-in-out 1 normal both;
+}
+
+@keyframes slideInContact {
+  0% {
+    transform: translate(80%, -50%);
+  }
+  100% {
+    transform: translate(-50%, -50%);
+  }
+}
+
+@keyframes slideOutContact {
+  0% {
+    transform: translate(-50%, -50%);
+  }
+  100% {
+    transform: translate(80%, -50%);
+  }
+}
+
 @media screen and (width<1105px) {
   .btn-close {
     filter: invert(100%) sepia(65%) saturate(2%) hue-rotate(338deg)
@@ -21,6 +49,46 @@
     &:hover {
       background-color: #eceefe;
       filter: unset;
+    }
+  }
+}
+
+@media screen and (width<1105px) {
+  .person-picture,
+  .contact-initial {
+    position: absolute;
+    bottom: 48%;
+    transform: translateX(-50%);
+    left: 50%;
+  }
+}
+
+@media screen and (width<600px) {
+  .slideInMobile {
+    transform: translate(-50%, 60%);
+    animation: slideOutContactMobile 250ms ease-in-out 1 normal both;
+  }
+
+  .slideOutMobile {
+    transform: translate(-50%, -50%);
+    animation: slideInContactMobile 250ms ease-in-out 1 normal both;
+  }
+
+  @keyframes slideInContactMobile {
+    0% {
+      transform: translate(-50%, 60%);
+    }
+    100% {
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  @keyframes slideOutContactMobile {
+    0% {
+      transform: translate(-50%, -50%);
+    }
+    100% {
+      transform: translate(-50%, 60%);
     }
   }
 }

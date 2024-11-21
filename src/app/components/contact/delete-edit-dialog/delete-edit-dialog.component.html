@@ -1,21 +1,42 @@
 <section>
-  <app-better-with-team title="contact" />
-  <div class="initial-name-container">
+  <div
+    class="initial-name-container"
+    [class.changeDisplay]="viewName === 'contact-infos'"
+  >
     <app-contact-name-initial />
     <div class="name-edit-delete">
-      <div id="name" class="name">Anton Mayer</div>
-      <app-delete-edit-button />
+      <p id="name" class="name">{{ selectedContact?.name }}</p>
+      <app-delete-edit-button
+        [class.hideBtn]="viewName === 'contact-infos'"
+        [template]="'contact'"
+        [deleteRef]="{ id: selectedContact?.id!, element: 'contacts' }"
+      />
     </div>
   </div>
   <div class="infos">
     <div class="contact-infos">contact information</div>
     <div class="info-title">
       <label for="email-address">Email</label>
-      <div class="email-address" id="email-address">ddddddddd</div>
+      <div class="email-address" id="email-address">
+        {{ selectedContact?.email }}
+      </div>
     </div>
     <div class="info-title">
       <label for="phone-number">Phone</label>
-      <div class="phone-number" id="phone-number">4444444444444</div>
+      <div class="phone-number" id="phone-number">
+        {{ selectedContact?.telephone }}
+      </div>
     </div>
+  </div>
+  <app-mobile-contact-dialog-button (click)="onEdit()" />
+  <div class="mobile-edit" id="mobile-edit">
+    <button (click)="onEditContact()">
+      <img src="assets/icons/editContact.svg" alt="" />
+      <span>edit</span>
+    </button>
+    <button (click)="onDeleteContact(selectedContact?.id!)">
+      <img src="assets/icons/delete.svg" alt="" />
+      <span>delete</span>
+    </button>
   </div>
 </section>

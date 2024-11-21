@@ -1,1 +1,42 @@
-<p>contact-list works!</p>
+<div class="contacts-overview-container">
+  <div class="overlay-hidden">
+    <button
+      class="add-new-contact"
+      (click)="onOpenNewContact(true); onAddContact(true)"
+    >
+      Add new contact<img src="assets/icons/addNewContact.svg" />
+    </button>
+  </div>
+
+  <ul class="list-contact">
+    <ng-container *ngFor="let contacts of groupedContact; let j = index">
+      <span class="letter">{{ contacts.letter }}</span>
+      <ng-container *ngFor="let contact of contacts.contacts; let i = index">
+        <li
+          id="contacts-overview"
+          (click)="
+            handleIndex(j, i);
+            onSendSelectedContact(contact);
+            onChangeView('contact-infos');
+            onOpenSingleContact(true)
+          "
+          [class.highlightBg]="
+            chosenLinkIndexGroup === j && chosenLinkIndexContact === i
+          "
+        >
+          <button
+            [style.backgroundColor]="contact.color_pattern"
+            class="name-initials"
+          >
+            {{ getNameInitials(contact.name) }}
+          </button>
+          <div>
+            <span class="name">{{ contact.name }}</span>
+            <span class="email">{{ contact.email }}</span>
+          </div>
+        </li>
+      </ng-container>
+    </ng-container>
+  </ul>
+</div>
+<app-head-mobile (click)="onOpenNewContact(true); onAddContact(true)" />

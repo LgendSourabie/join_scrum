@@ -1,1 +1,38 @@
-<p>add-new-task works!</p>
+<section [class.board_task]="boardNewTask">
+  <div class="top-line">
+    <h1 class="title">Add task</h1>
+    <button *ngIf="boardNewTask" (click)="onCloseAddTask()" class="btn-close">
+      <img src="assets/icons/close.svg" alt="" />
+    </button>
+  </div>
+  <form autocomplete="off" #form="ngForm">
+    <main>
+      <app-title-description-section />
+      <div class="vertical-sep-line"></div>
+      <app-date-category-section />
+    </main>
+    <div class="send-line">
+      <span><span>*</span>This field is required </span>
+      <div class="buttons-create-contact d-flex">
+        <button type="button" class="btn btn-cancel" (click)="onCloseAddTask()">
+          cancel
+        </button>
+        <button
+          *ngIf="!boardNewTask"
+          (click)="onCreateNewTask()"
+          class="btn btn-create"
+        >
+          Create task
+        </button>
+        <button
+          (click)="onEditTask(toEditTask?.id!)"
+          type="button"
+          *ngIf="boardNewTask"
+          class="btn btn-create"
+        >
+          Save
+        </button>
+      </div>
+    </div>
+  </form>
+</section>

@@ -1,0 +1,37 @@
+<section *ngIf="profile_state">
+  <div class="ch-creation">
+    <span>Account Infos</span>
+    <img
+      class="cursor-effect close-btn"
+      (click)="onToggleProfile()"
+      src="assets/icons/close.svg"
+      alt=""
+    />
+  </div>
+  <main>
+    <button
+      [ngStyle]="{
+        'background-color':
+          accountData.length === 0
+            ? '#42526e'
+            : accountData[0].contacts.length === 0
+            ? '#42526e'
+            : accountData[0].contacts[0].color_pattern
+      }"
+    >
+      {{ getNameInitials() }}
+    </button>
+    <div>
+      <span class="name">
+        {{ getAccountInfos()[0] }}
+        {{ getAccountInfos()[1] }}</span
+      >
+      <span>{{ getAccountInfos()[2] }}</span>
+      <a
+        class="cursor-effect"
+        (click)="onToggleEditProfile(); onToggleProfile()"
+        >view account</a
+      >
+    </div>
+  </main>
+</section>

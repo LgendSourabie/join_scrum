@@ -1,0 +1,55 @@
+<div class="input-goup">
+  <label for="title">title <span>*</span></label>
+  <input
+    [(ngModel)]="task.title"
+    type="text"
+    #titleInput
+    name="title"
+    id="title"
+    placeholder="Enter a title"
+    [class.highlightBorder]="errorCreateTask.title"
+  />
+  <span class="error" [class.showError]="errorCreateTask.title">
+    This field is required
+  </span>
+</div>
+<div class="input-goup">
+  <label class="description-label" for="description">description</label>
+  <textarea
+    name="description"
+    [(ngModel)]="task.description"
+    placeholder="Enter a description"
+    id="description"
+    cols="30"
+  ></textarea>
+</div>
+<div class="input-goup assignee">
+  <label for="assigned_to">assigned to</label>
+  <div class="category-group">
+    <input
+      placeholder="Select contacts to assign"
+      name="assigned_to"
+      [(ngModel)]="task.assign_to"
+      id="assigned_to"
+      (input)="handleOpenOnSearch()"
+    />
+    <button type="button" (click)="onOpenContact()">
+      <img
+        class="drop-down"
+        src="assets/icons/drop-down.svg"
+        [class.rotate]="openContacts"
+        alt=""
+      />
+    </button>
+  </div>
+  <app-search-contact [contacts]="contacts" />
+</div>
+<li class="contact-list">
+  <ng-container
+    *ngFor="let contact of assigned_to_contacts_list; let i = index"
+  >
+    <button class="contact-btn" [style.backgroundColor]="contact.color_pattern">
+      {{ onNameInitials(contact.name) }}
+    </button>
+  </ng-container>
+</li>

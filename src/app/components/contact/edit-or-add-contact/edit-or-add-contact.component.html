@@ -1,8 +1,17 @@
-<app-wrapper>
+<app-wrapper
+  [class.slideInNewContact]="newContact"
+  [class.slideOutNewContact]="!newContact"
+  [class.slideOutMobile]="newContact"
+  [class.slideInMobile]="!newContact"
+>
   <app-title-board />
-  <app-contact-name-initial />
+  @if (isPictureContact) {
+  <app-person-picture class="person-picture" />
+  }@else {
+  <app-contact-name-initial class="contact-initial" />
+  }
   <app-contact-form />
-  <button class="btn-close">
+  <button class="btn-close" (click)="onOpenNewContact(false)">
     <img src="assets/icons/close.svg" alt="" />
   </button>
 </app-wrapper>

@@ -1,0 +1,85 @@
+<div class="overlay">
+  <div class="overlaybutton">
+    <button
+      [class]="{ 
+        'tech-bg': task?.category==='technical task',
+        'user_story-bg':task?.category==='user story',
+        'event-bg':task?.category==='team event',
+        'others-bg':task?.category==='others',
+        }"
+      id="category"
+      class="cat-type"
+    >
+      {{ task?.category }}
+    </button>
+    <img (click)="onEditTask()" src="assets/icons/close.svg" alt="" />
+  </div>
+  <h1>{{ task?.title }}</h1>
+  <span class="overlaydiscription">{{ task?.description }}</span>
+  <div class="overlaytable">
+    <span class="gray-clr">Due date:</span>
+    <span>{{ task?.due_date }}</span>
+  </div>
+  <div class="overlaytable">
+    <span class="gray-clr">Priority:</span>
+    <div class="align-item-center">
+      <span>{{ task?.priority }}</span>
+      <img
+        id="prio"
+        src="assets/icons/{{
+          task?.priority === 'urgent'
+            ? 'priourgent.svg'
+            : task?.priority === 'low'
+            ? 'priolow.svg'
+            : 'priomedium.svg'
+        }}"
+        alt="prio"
+      />
+    </div>
+  </div>
+  <div class="overlayassigned">
+    <div class="gray-clr">Assinged to:</div>
+    <ul id="assigned" class="btn assigned">
+      <ng-container *ngFor="let contact of task?.assigned_to">
+        <li>
+          <button
+            id="optBtn"
+            [style.backgroundColor]="contact.color_pattern"
+            class="btn-name-initials"
+          >
+            {{ getNameInitials(contact.name) }}
+          </button>
+          <span>{{ contact.name }}</span>
+        </li>
+      </ng-container>
+    </ul>
+  </div>
+  <div class="overlayassigned">
+    <span class="gray-clr">Subtasks:</span>
+    <ul id="subtasks" *ngIf="task?.subtasks">
+      <ng-container *ngFor="let subtask of task?.subtasks; let i = index">
+        <li class="align-horizontally">
+          <button
+            (click)="onSubtaskComplete(subtask.is_completed!, subtask.id!)"
+          >
+            <img
+              class="cursor-effect"
+              id="checkbox"
+              src="assets/icons/{{
+                subtask.is_completed ? 'checkButton.svg' : 'checkbox.svg'
+              }}"
+              alt=""
+            />
+          </button>
+          <span> {{ subtask.description }}</span>
+        </li>
+      </ng-container>
+    </ul>
+  </div>
+  <div class="overlaychange">
+    <app-delete-edit-button
+      [template]="'task'"
+      [deleteRef]="{ id: task?.id!, element: 'tasks' }"
+    />
+  </div>
+</div>

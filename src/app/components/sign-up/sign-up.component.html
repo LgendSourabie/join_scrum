@@ -3,13 +3,14 @@
   <div class="container-login">
     <form
       class="user-log-data-section-signup disp-flex"
-      onsubmit="registrationUser();return false"
+      (ngSubmit)="onSubmit(contactForm)"
+      #contactForm="ngForm"
     >
       <img
         class="exit-arrow"
         src="assets/icons/arrow-left-line.svg"
         alt="Exit"
-        onclick="userAction('login')"
+        routerLink="/account/log-in"
       />
       <div class="title-join-underline disp-flex">
         <div class="log-title">Sign up</div>
@@ -23,8 +24,12 @@
                 id="register-user-name"
                 class="input-login input-login-1"
                 type="text"
-                pattern="[a-zA-Z\s]*"
+                #name="ngModel"
+                [(ngModel)]="registerData.name"
+                pattern="^[A-Za-zäöüßÄÖÜ]{1,}(?: [A-Za-zäöüßÄÖÜ]+)*$"
+                minlength="2"
                 placeholder="Name"
+                name="username"
                 required
               />
               <button type="button" class="icon-btn-login mail-btn-pointer-pos">
@@ -35,15 +40,21 @@
                 />
               </button>
             </div>
-            <!-- <p id="emailExist"></p> -->
           </div>
           <div class="inp-ctn">
             <div class="inpt-mail-icon-grp ps-rel-mail">
               <input
                 id="register-user-email"
+                #email="ngModel"
+                [(ngModel)]="registerData.email"
                 class="input-login input-login-1"
+                [class.highlightBorder]="
+                  errorSignUp.error_type &&
+                  errorSignUp.error_type[0] === 'email_exist'
+                "
                 type="email"
                 placeholder="Email"
+                name="email"
                 required
               />
               <button type="button" class="icon-btn-login mail-btn-pointer-pos">
@@ -54,7 +65,16 @@
                 />
               </button>
             </div>
-            <p id="emailExist"></p>
+
+            <span
+              class="error"
+              [class.showError]="
+                errorSignUp.error_type &&
+                errorSignUp.error_type[0] === 'email_exist'
+              "
+            >
+              This Email already exists. Please chose a different email.
+            </span>
           </div>
           <!-- hier -->
           <div class="inp-ctn">
@@ -62,62 +82,91 @@
               <input
                 id="pwd"
                 class="input-login input-login-2"
-                type="password"
+                type="{{ pwdType }}"
+                (input)="handleVisibility(registerData.password, 'password')"
+                #password="ngModel"
+                [(ngModel)]="registerData.password"
                 placeholder="Password"
-                minlength="4"
+                minlength="6"
+                name="password"
                 required
-                oninput="handlePwdIcon('pwd','pwd-img-signup')"
               />
               <button
                 type="button"
                 class="icon-btn-login pwd-btn-pos"
-                onclick="showPassword('pwd');toggleVisibleIcon('pwd-img-signup')"
+                (click)="onShowPwd('password')"
               >
                 <img
                   id="pwd-img-signup"
-                  src="assets/icons/lock.svg"
+                  src="assets/icons/{{
+                    pwdVisibility ? pwdIconPathVisible : 'lock.svg'
+                  }}"
                   alt="Password"
                 />
               </button>
             </div>
-            <!-- <p id="passwordError"></p> -->
           </div>
           <div class="inp-ctn">
             <div class="inpt-mail-icon-grp ps-rel-pwd">
               <input
                 id="confirm-pwd"
+                #confirm_password="ngModel"
                 class="input-login input-login-2"
-                type="password"
+                [class.highlightBorder]="
+                  errorSignUp.error_type &&
+                  errorSignUp.error_type[0] === 'password'
+                "
+                (input)="
+                  handleVisibility(registerData.confirm_password, 'confirm_pwd')
+                "
+                type="{{ confirmPwdType }}"
+                [(ngModel)]="registerData.confirm_password"
                 placeholder="Confirm Password"
-                minlength="4"
+                minlength="6"
+                name="confirm-pwd"
                 required
-                oninput="handlePwdIcon('confirm-pwd','conf-pwd-img')"
               />
               <button
                 type="button"
                 class="icon-btn-login pwd-btn-pos"
-                onclick="showPassword('confirm-pwd');toggleVisibleIcon('conf-pwd-img')"
+                (click)="onShowPwd('confirm_pwd')"
               >
                 <img
                   id="conf-pwd-img"
-                  src="assets/icons/lock.svg"
+                  src="assets/icons/{{
+                    confirmPwdVisibility
+                      ? confirmPwdIconPathVisible
+                      : 'lock.svg'
+                  }}"
                   alt="Password"
                 />
               </button>
             </div>
-            <p id="confirmPwdError"></p>
+            <span
+              class="error"
+              [class.showError]="
+                errorSignUp.error_type &&
+                errorSignUp.error_type[0] === 'password'
+              "
+            >
+              Your passwords don't match. Please try again.
+            </span>
           </div>
         </div>
         <div class="remember-line rmb-signup disp-flex ft-sz-400">
           <div class="remember-me disp-flex">
-            <img
-              id="checkbox-sign-up"
-              src="assets/icons/checkboxUncheck.svg"
-              alt="Check"
-              onclick="checkButton('checkbox-sign-up','assets/icons/checkboxUncheck.svg','assets/icons/checkboxChecked.svg'); enableSignUP()"
-            />
+            <button type="button" class="toggle-btn">
+              <img
+                (click)="onTogglePolicy()"
+                id="checkbox-sign-up"
+                src="assets/icons/{{
+                  togglePolicy ? 'checkboxChecked.svg' : 'checkboxUncheck.svg'
+                }}"
+                alt="Check"
+              />
+            </button>
             <span class="remember ft-sz-400">I accepted the </span
-            ><a class="consent-policy" onclick="userAction('privacy_signup')"
+            ><a class="consent-policy" routerLink="/account/privacy-policy"
               >Privacy Policy</a
             >
           </div>
@@ -126,7 +175,29 @@
           <button
             id="sign-up-btn"
             class="blue-btn-signup log-guest-btn"
-            disabled
+            [disabled]="
+              !togglePolicy ||
+              !confirm_password.valid ||
+              !password.valid ||
+              !email.valid ||
+              !name.valid
+            "
+            [class.hover_effect]="
+              togglePolicy &&
+              confirm_password.valid &&
+              password.valid &&
+              email.valid &&
+              name.valid
+            "
+            [style.opacity]="
+              !togglePolicy ||
+              !confirm_password.valid ||
+              !password.valid ||
+              !email.valid ||
+              !name.valid
+                ? '0.75'
+                : '1'
+            "
           >
             Sign up
           </button>
@@ -134,12 +205,16 @@
       </div>
     </form>
     <div class="privacy-link-login-signup">
-      <a class="links-login ft-sz-400" onclick="userAction('privacy_signup')"
+      <a
+        class="links-login ft-sz-400"
+        routerLink="/account/privacy-policy"
+        (click)="handleIndex('offline-privacy-policy')"
         >Privacy Policy</a
       >
       <a
         class="links-login ft-sz-400 legal-notice"
-        onclick="userAction('legal_notice_signup')"
+        (click)="handleIndex('offline-legal-notice')"
+        routerLink="/account/legal-notice"
         >Legal Notice</a
       >
     </div>

@@ -1,0 +1,26 @@
+.slideIn {
+  transform: translate(80%, -50%);
+  animation: slideInTask 300ms ease-in-out 1 normal both;
+}
+.slideOut {
+  transform: translate(-50%, -50%);
+  animation: slideOutTask 300ms ease-in-out 1 normal both;
+}
+
+@keyframes slideInTask {
+  0% {
+    transform: translate(80%, -50%);
+  }
+  100% {
+    transform: translate(-50%, -50%);
+  }
+}
+
+@keyframes slideOutTask {
+  0% {
+    transform: translate(-50%, -50%);
+  }
+  100% {
+    transform: translate(80%, -50%);
+  }
+}

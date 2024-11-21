@@ -1,1 +1,13 @@
-<p>contact works!</p>
+<app-contact-list [class.closeList]="viewName === 'contact-infos'" />
+<main class="closeDialog" [class.showDialog]="viewName === 'contact-infos'">
+  <app-better-with-team
+    title="contact"
+    class="app-better-with-team"
+    [class.top-mobile]="viewName === 'contact-infos'"
+  />
+  <app-delete-edit-dialog id="edit-contact" class="edit-contact" />
+</main>
+@if (newContact) {
+<app-edit-or-add-contact />
+<div class="overlay"></div>
+}

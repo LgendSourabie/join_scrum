@@ -1,0 +1,12 @@
+<form autocomplete="off" #dialog [class.show-categories]="openCategories">
+  <ul class="users">
+    <ng-container *ngFor="let category of categories; let i = index">
+      <li
+        (click)="getCategory(category.title)"
+        class="d-flex profiles capitilize gp cursor-effect"
+      >
+        <span> {{ category.title }} </span>
+      </li>
+    </ng-container>
+  </ul>
+</form>

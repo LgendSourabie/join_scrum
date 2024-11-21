@@ -1,0 +1,110 @@
+<div class="task-field">
+  <label for="due_date">due date <span>*</span></label>
+
+  <div class="picker-group">
+    <input
+      class="date-input"
+      [(ngModel)]="task.date"
+      name="due_date"
+      id="due_date"
+      #dateInput
+      placeholder="dd/mm/yyyy"
+      [matDatepicker]="datepicker"
+      [class.highlightBorder]="errorCreateTask.due_date"
+    />
+    <mat-datepicker-toggle [for]="datepicker" class="pickerToggle" />
+    <mat-datepicker #datepicker>
+      <mat-datepicker-actions>
+        <button type="button" id="cancel" mat-button matDatepickerCancel>
+          Cancel
+        </button>
+        <button type="button" id="apply" mat-raised-button matDatepickerApply>
+          Apply
+        </button>
+      </mat-datepicker-actions>
+    </mat-datepicker>
+    <span class="error" [class.showError]="errorCreateTask.due_date">
+      This field is required
+    </span>
+  </div>
+</div>
+<div class="task-field">
+  <label class="prio-label" for="prio">prio</label>
+  <div class="priority">
+    <ng-container *ngFor="let prio of priorities; let i = index">
+      <button
+        type="button"
+        id="prio"
+        (click)="
+          onSelectPriority(prio.description); onChoosePriority(prio.description)
+        "
+        [class]="{
+        'urgent-bg': prio.description==='urgent' && priorityName=== 'urgent',
+        'medium-bg': prio.description==='medium' && priorityName==='medium',
+        'low-bg': prio.description==='low' && priorityName==='low',
+      }"
+      >
+        <span>{{ prio.description }}</span>
+        <img
+          src="assets/icons/{{ prio.icon }}_{{
+            priorityName === prio.description ? 'white' : 'colored'
+          }}.svg"
+          alt="{{ prio.description }}"
+        />
+      </button>
+    </ng-container>
+  </div>
+</div>
+<div class="task-field categories">
+  <label for="category">category <span>*</span></label>
+  <div class="category-group">
+    <input
+      [(ngModel)]="task.category"
+      name="category"
+      id="category"
+      placeholder="Select task category"
+      [class.highlightBorder]="errorCreateTask.category"
+    />
+    <button type="button" (click)="onOpenCategories()">
+      <img
+        class="drop-down"
+        [class.rotate]="openCategories"
+        src="assets/icons/drop-down.svg"
+        alt=""
+      />
+    </button>
+    <span class="error" [class.showError]="errorCreateTask.category">
+      This field is required
+    </span>
+  </div>
+  <app-categories />
+</div>
+<div class="task-field">
+  <label class="subtasks-label" for="subtasks">subtasks</label>
+  <div class="input-subtask">
+    <textarea
+      name="subtasks"
+      [(ngModel)]="task.subtask_description"
+      placeholder="Add new Task"
+      (input)="onStartAddSubtask()"
+      id="subtasks"
+      cols="30"
+    ></textarea>
+    <div>
+      <button type="button" *ngIf="is_add_btn" (click)="onOpenAddSubtask()">
+        <img src="assets/icons/subtasksPlus.svg" alt="" />
+      </button>
+      <button type="button" *ngIf="!is_add_btn" (click)="onCancelSubtask()">
+        <img src="assets/icons/close.svg" alt="" />
+      </button>
+      <button
+        type="button"
+        *ngIf="!is_add_btn"
+        (click)="onAddSubtask(task.subtask_description)"
+      >
+        <img src="assets/icons/subtasks_check.svg" alt="" />
+      </button>
+    </div>
+    <app-subtasks-list [subtasks]="subtasks_list" />
+  </div>
+</div>

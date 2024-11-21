@@ -1,3 +1,9 @@
+:host {
+  overflow-y: auto;
+  height: 100vh;
+  height: 100dvh;
+}
+
 a,
 button {
   cursor: pointer;
@@ -120,6 +126,8 @@ button {
   }
 }
 
-.right-side-section {
-  width: 100%;
+@media (width<=760px) {
+  :host {
+    height: calc(100vh - 100px);
+  }
 }

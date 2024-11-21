@@ -1,0 +1,43 @@
+.buttons-create-contact {
+  display: flex;
+  gap: 2rem;
+  > .btn {
+    padding: 0.63rem 1rem;
+    border-radius: 10px;
+    font-size: 18px;
+    border: transparent;
+    transition: all 250ms ease-in-out;
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+  > .btn-cancel {
+    border: 1px #2a3647 solid;
+    color: #2a3647;
+    border-radius: 10px;
+    background-color: white;
+    &:hover {
+      border: 1px #29abe2 solid;
+      color: #33afe3;
+    }
+  }
+  > .btn-create {
+    background-color: #2a3647;
+    color: white;
+    font-weight: 700;
+    display: flex;
+    justify-content: center;
+    border-radius: 10px;
+    &:hover {
+      background-color: #33afe3;
+    }
+  }
+}
+
+@media screen and (width<400px) {
+  .buttons-create-contact {
+    > .btn {
+      font-size: 13px;
+    }
+  }
+}

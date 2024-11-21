@@ -1,8 +1,13 @@
-<form class="add-contact-data-inputs" action="#">
+<form
+  class="add-contact-data-inputs"
+  (ngSubmit)="onCreateContact(this.isAddContact)"
+>
   <div class="d-flex add-contact-input-container">
     <input
       type="text"
       minlength="2"
+      [(ngModel)]="contactData.name"
+      name="name"
       placeholder="Name"
       class="add-contact-input"
       id="name-input"
@@ -14,6 +19,8 @@
     <input
       type="email"
       placeholder="Email"
+      [(ngModel)]="contactData.email"
+      name="email"
       class="add-contact-input"
       id="email-input"
       pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}"
@@ -25,20 +32,13 @@
     <input
       type="tel"
       placeholder="Phone"
+      [(ngModel)]="contactData.telephone"
+      name="telephone"
       class="add-contact-input"
       id="telephone-input"
-      pattern="(0|\+\d{1,3})[- ]?\d{3}[- ]?\d{3}[- ]?\d{4}"
       required
     />
     <img src="assets/icons/telephone.svg" alt="telephone-icon" />
   </div>
-  <div class="buttons-create-contact d-flex">
-    <button type="button" class="btn btn-cancel" onclick="closeAddContact()">
-      cancel
-    </button>
-    <button type="submit" class="btn btn-create" id="button-add-edit">
-      create contact
-      <!-- {{ form_type === "create" ? "create contact" : "save" }} -->
-    </button>
-  </div>
+  <app-cancel-create-button class="app-cancel-create-button" />
 </form>

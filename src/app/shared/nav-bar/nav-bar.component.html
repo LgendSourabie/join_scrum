@@ -3,15 +3,18 @@
   <div class="kanban-tool ft-sz-400">Kanban Project Management Tool</div>
   <div class="menu-icons-group disp-flex">
     <button class="btn-help" routerLink="/dashboard/help">
-      <img
-        id="help-icon"
-        class="help"
-        src="assets/icons/help.svg"
-        alt="Help"
-        onclick="render(templateHelp())"
-      />
+      <img id="help-icon" class="help" src="assets/icons/help.svg" alt="Help" />
     </button>
 
-    <button id="loginBtn" class="login" onclick="showSubmenu()">IS</button>
+    <button id="loginBtn" class="login" (click)="onToggleSubMenu()">
+      {{ getNameInitials() }}
+    </button>
   </div>
 </header>
+<app-submenu />
+<app-profile [accountData]="userData" />
+<app-edit-profile
+  [email]="userData[0]?.email"
+  [username]="username"
+  [id]="userData[0]?.id"
+/>

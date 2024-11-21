@@ -11,8 +11,40 @@ body {
   background-color: rgb(246, 247, 248);
 }
 
-button {
+.mat-datepicker-toggle {
+  > button {
+    background-color: transparent;
+    > svg {
+      border-radius: 50%;
+      color: #42526e !important;
+    }
+    > span {
+      width: 0px !important;
+      height: 0px !important;
+      display: none;
+    }
+  }
+}
+
+.mat-datepicker-content {
+  transform: translateX(-50%) !important;
+}
+
+.cdk-overlay-container {
+  max-width: 440px !important;
+  width: 90vw !important;
+  > .cdk-overlay-connected-position-bounding-box {
+    left: 50% !important;
+  }
+}
+
+button,
+.btn,
+.cursor-effect {
   cursor: pointer;
+  &::first-letter {
+    text-transform: capitalize;
+  }
 }
 li {
   list-style: none;
@@ -27,4 +59,30 @@ h2,
 p {
   margin-block-end: 0;
   margin-block-start: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+html {
+  overflow-x: hidden !important;
+}
+
+.tech-bg {
+  background-color: rgb(46, 165, 106);
+}
+.user_story-bg {
+  background-color: #0038ff;
+}
+.event-bg {
+  background-color: rgb(25, 196, 195);
+}
+.others-bg {
+  background-color: rebeccapurple;
 }

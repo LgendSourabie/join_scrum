@@ -1,0 +1,12 @@
+<div class="buttons-create-contact d-flex">
+  <button
+    type="button"
+    class="btn btn-cancel"
+    (click)="onOpenNewContact(false)"
+  >
+    cancel
+  </button>
+  <button type="submit" class="btn btn-create">
+    {{ newContact ? "Create contact" : "Save" }}
+  </button>
+</div>

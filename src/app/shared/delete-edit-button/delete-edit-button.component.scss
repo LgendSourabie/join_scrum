@@ -17,7 +17,7 @@
       opacity: 0.8;
     }
   }
-  > .btn-edit {
+  > .btn-delete {
     border: 2px #2a3647 solid;
     color: #2a3647;
     border-radius: 10px;
@@ -36,25 +36,29 @@
       }
     }
   }
-  > .btn-delete {
-    background-color: #e61c40;
-    color: #2a3647;
+  > .btn-edit {
+    background-color: #2a3647; // #e61c40;
+    color: white;
     font-weight: 700;
     display: flex;
     justify-content: center;
     border-radius: 10px;
     span {
-      color: #2a3647;
+      color: white;
       transition: all 250ms ease-in-out;
     }
-    &:hover {
-      > span {
-        color: white;
-      }
-      > img {
-        filter: invert(100%) sepia(65%) saturate(2%) hue-rotate(338deg)
-          brightness(112%) contrast(101%);
-      }
+    > img {
+      filter: invert(100%) sepia(65%) saturate(2%) hue-rotate(338deg)
+        brightness(112%) contrast(101%);
     }
+    &:hover {
+      background-color: #29abe2;
+    }
+  }
+}
+
+@media (width<970px) {
+  .edit-or-delete {
+    gap: 1rem;
   }
 }

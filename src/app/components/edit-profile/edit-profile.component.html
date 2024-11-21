@@ -1,0 +1,50 @@
+<section *ngIf="edit_profile_state">
+  <div class="ch-creation">
+    <span>Edit your profile</span>
+    <img
+      class="cursor-effect close-btn"
+      (click)="onToggleEditProfile()"
+      src="assets/icons/close.svg"
+      alt=""
+    />
+  </div>
+
+  <div class="single-user-info top-mg-1">
+    <img class="mail" src="assets/icons/user.svg" alt="" />
+    <span class="address">Full Name</span>
+  </div>
+  <input
+    class="capitalize"
+    #usernameModel="ngModel"
+    [(ngModel)]="username"
+    type="text"
+    required=""
+    placeholder="Surname first name"
+    pattern="^[A-Za-zäöüßÄÖÜ]{1,}(?: [A-Za-zäöüßÄÖÜ]+)*$"
+  />
+  <div class="single-user-info">
+    <img class="mail" src="assets/icons/envelope.svg" alt="" />
+    <span class="address">E-Mail Address</span>
+  </div>
+  <input
+    [(ngModel)]="email"
+    #user_emailModel="ngModel"
+    type="email"
+    placeholder="Email"
+    pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}"
+    required
+  />
+  <div class="btn-container">
+    <button class="btn" (click)="onToggleEditProfile()">cancel</button>
+    <button
+      (click)="onEditAccountData()"
+      class="btn"
+      [disabled]="!user_emailModel.valid || !usernameModel.valid"
+      [style.opacity]="
+        !user_emailModel.valid || !usernameModel.valid ? '0.5' : '1'
+      "
+    >
+      Save changes
+    </button>
+  </div>
+</section>

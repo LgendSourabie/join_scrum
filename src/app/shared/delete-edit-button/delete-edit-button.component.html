@@ -1,9 +1,17 @@
 <div class="edit-or-delete">
-  <button class="btn btn-edit">
+  @if(template==='contact'){
+  <button class="btn btn-edit" (click)="onEditContact()">
     <img class="contact-edit" src="assets/icons/editContact.svg" />
     <span> Edit </span>
   </button>
-  <button class="btn btn-delete">
+  }@else if(template==='task') {
+  <button class="btn btn-edit" (click)="onEditTask()">
+    <img class="contact-edit" src="assets/icons/editContact.svg" />
+    <span> Edit </span>
+  </button>
+  }
+
+  <button class="btn btn-delete" (click)="onDeleteContact()">
     <img src="assets/icons/delete.svg" />
     <span> Delete </span>
   </button>

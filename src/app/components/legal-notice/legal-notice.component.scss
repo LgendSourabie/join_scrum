@@ -1,5 +1,14 @@
+:host {
+  overflow-y: auto;
+  padding-inline: 3.5rem;
+  flex: 1;
+}
 .summary-body {
   height: 100vh;
+}
+
+.mail-links {
+  color: #29abe2;
 }
 .container-summary {
   height: 100vh;
@@ -20,18 +29,8 @@
 
 .task-info-section {
   background-color: rgb(246, 247, 248);
-  padding-inline: 4rem;
-  height: calc(100vh - 70px - 3rem);
-  height: calc(100dvh - 70px - 3rem);
-
   flex-direction: column;
   justify-content: center;
-}
-
-@media (width<=1130px) {
-  .task-info-section {
-    padding-left: 2rem;
-  }
 }
 
 @media (width<=855px) {

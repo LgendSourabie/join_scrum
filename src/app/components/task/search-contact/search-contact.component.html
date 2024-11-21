@@ -1,0 +1,29 @@
+<form autocomplete="off" #dialog [class.show-contacts]="openContacts">
+  <ul class="users">
+    <ng-container *ngFor="let contact of contacts; let i = index">
+      <li
+        class="d-flex profiles capitilize gp l-mg-2 cursor-effect"
+        (click)="onAssignContact(contact.id!, contact)"
+        [ngClass]="{ highlightContact: onSelectContact(contact.id!) }"
+      >
+        <div>
+          <button
+            [style.backgroundColor]="contact.color_pattern"
+            class="btn-contact"
+          >
+            {{ onNameInitials(contact.name) }}
+          </button>
+          <span> {{ contact.name }} </span>
+        </div>
+        <img
+          src="assets/icons/{{
+            onSelectContact(contact.id!)
+              ? 'checkboxChecked.svg'
+              : 'checkboxUncheck.svg'
+          }}"
+          alt=""
+        />
+      </li>
+    </ng-container>
+  </ul>
+</form>

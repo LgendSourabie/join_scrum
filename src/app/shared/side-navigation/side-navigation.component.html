@@ -2,85 +2,51 @@
   <div class="section-1">
     <img class="logo-summary" src="assets/icons/logo.svg" alt="Logo" />
   </div>
-  <div class="section-2">
-    <div
-      id="first-bg"
-      class="sub-menu-container disp-flex bg-summary"
-      onclick="userAction('summary');toggleButtonColor('first-bg','summary-text','summary-img','assets/icons/summary_white.svg') "
-    >
-      <img
-        id="summary-img"
-        class="icons-left-side-section cursor-ptr"
-        src="assets/icons/summary_white.svg"
-        alt="Summary"
-      />
-      <p
-        id="summary-text"
-        class="para-summary gray-text ft-sz-400 clr-white cursor-ptr"
+  <ul class="section-2">
+    <ng-container *ngFor="let link of links; let i = index">
+      <li
+        id="first-bg"
+        class="sub-menu-container disp-flex"
+        routerLink="{{ link.path }}"
+        (click)="handleIndex(link.url); resetSelectedContact()"
+        [class.highlightBg]="chosenMenu === link.url"
       >
-        Summary
-      </p>
-    </div>
-
-    <div
-      id="second-bg"
-      class="sub-menu-container disp-flex"
-      onclick="render(templateAddTask()); clearTask();  initialize(); toggleButtonColor('second-bg','addTask-text','addTask-img','assets/icons/addTask-white.svg')"
-    >
-      <img
-        id="addTask-img"
-        class="icons-left-side-section cursor-ptr"
-        src="assets/icons/addTask.svg"
-        alt="Task"
-      />
-      <p id="addTask-text" class="para-summary gray-text ft-sz-400 cursor-ptr">
-        Add Task
-      </p>
-    </div>
-
-    <div
-      id="third-bg"
-      class="sub-menu-container disp-flex"
-      onclick="render(templateBoard()); sliderScroll();toggleButtonColor('third-bg','bord-text','bord-img','assets/icons/board-white.svg'); renderToDos()"
-    >
-      <img
-        id="bord-img"
-        class="icons-left-side-section cursor-ptr"
-        src="assets/icons/board.svg"
-        alt="Board"
-      />
-      <p id="bord-text" class="para-summary gray-text ft-sz-400 cursor-ptr">
-        Board
-      </p>
-    </div>
-
-    <div
-      id="fourth-bg"
-      class="sub-menu-container disp-flex"
-      onclick="render(templateContacts()); renderContactSection() ; toggleButtonColor('fourth-bg','contact-text','contact-img','assets/icons/contact-white.svg')"
-    >
-      <img
-        id="contact-img"
-        class="icons-left-side-section cursor-ptr"
-        src="assets/icons/contact.svg"
-        alt="Contacts"
-      />
-      <p id="contact-text" class="para-summary gray-text ft-sz-400 cursor-ptr">
-        Contacts
-      </p>
-    </div>
-  </div>
+        <img
+          id="summary-img"
+          class="icons-left-side-section cursor-ptr"
+          src="assets/icons/{{ link.icon }}_{{
+            chosenMenu === link.text ? 'white' : 'gray'
+          }}.svg"
+          alt="{{ link.text }}"
+        />
+        <p
+          id="summary-text"
+          class="para-summary gray-text ft-sz-400 cursor-ptr"
+        >
+          {{ link.text }}
+        </p>
+      </li>
+    </ng-container>
+  </ul>
   <div class="section-3">
     <a
       id="privacy-bg"
       class="gray-text links"
       routerLink="/dashboard/privacy-policy"
+      (click)="handleIndex('privacy-policy'); resetSelectedContact()"
+      [style.backgroundColor]="
+        chosenMenu === 'privacy-policy' ? '#091931' : 'unset'
+      "
       >Privacy Policy</a
     >
     <a
       routerLink="/dashboard/legal-notice"
       id="legal-notice-bg"
       class="gray-text links"
+      (click)="handleIndex('legal-notice'); resetSelectedContact()"
+      [style.backgroundColor]="
+        chosenMenu === 'legal-notice' ? '#091931' : 'unset'
+      "
       >Legal Notice</a
     >
   </div>

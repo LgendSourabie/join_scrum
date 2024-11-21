@@ -1,0 +1,61 @@
+:host {
+  display: flex;
+  flex: 1;
+  padding-inline: 0.25rem;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: calc(100vh - 75px);
+  height: calc(100dvh - 75px);
+  flex: 1;
+  padding-block: 3rem 1rem;
+  padding-left: 2rem;
+  > .app-better-with-team {
+    margin-left: 2rem;
+  }
+}
+
+.edit-contact {
+  transform: translateX(105%);
+}
+// .d-none {
+//   display: none !important;
+// }
+
+.slideIn {
+  animation: edit-contact-animation 300ms ease-in-out 1 both;
+}
+
+@keyframes edit-contact-animation {
+  0% {
+    transform: translateX(105%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+@media screen and (width<940px) {
+  main {
+    padding-left: unset;
+  }
+}
+
+@media screen and (width<600px) {
+  .closeDialog {
+    display: none;
+  }
+  .top-mobile {
+    margin-top: 2rem;
+  }
+
+  .showDialog {
+    display: flex !important;
+  }
+  .closeList {
+    display: none;
+  }
+}

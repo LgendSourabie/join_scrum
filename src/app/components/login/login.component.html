@@ -4,14 +4,19 @@
     <div class="menu-login">
       <div class="icon-links-login">
         <span class="question-user">Not a Join user?</span>
-        <button onclick="userAction('signup')" class="sign-up blue-btn">
+        <button
+          (click)="onresetValidation()"
+          routerLink="/account/sign-up"
+          class="sign-up blue-btn"
+        >
           Sign up
         </button>
       </div>
     </div>
     <form
       class="user-log-data-section disp-flex"
-      onsubmit="onLogIn();return false"
+      (ngSubmit)="onSubmit(contactForm)"
+      #contactForm="ngForm"
       novalidate
     >
       <div class="title-join-underline disp-flex">
@@ -23,9 +28,20 @@
           <div class="inp-ctn">
             <div class="inpt-mail-icon-grp ps-rel-mail">
               <input
+                #email="ngModel"
+                [(ngModel)]="loginData.email"
                 id="email"
+                [class.error]="
+                  (loginError.error_type &&
+                    loginError.error_type[0] === 'no_user_error') ||
+                  (loginError.error_type &&
+                    loginError.error_type[0] === 'incorrect_email_pwd_error')
+                "
                 class="input-login input-login-1"
+                (focus)="onEmailFocus()"
+                (blur)="onEmailBlur()"
                 type="email"
+                name="email"
                 placeholder="Email"
                 required
                 pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}"
@@ -38,43 +54,82 @@
                 />
               </button>
             </div>
-            <p id="emailError"></p>
+            <p
+              id="passwordError"
+              class="hideError"
+              [class.showError]="
+                loginError.error_type &&
+                loginError.error_type[0] === 'no_user_error'
+              "
+            >
+              {{
+                loginError.error_message !== null
+                  ? loginError.error_message[0]
+                  : ""
+              }}
+            </p>
           </div>
 
           <div class="inp-ctn">
             <div class="inpt-mail-icon-grp ps-rel-pwd">
               <input
+                #password="ngModel"
+                [(ngModel)]="loginData.password"
                 id="password"
+                [class.error]="
+                  loginError.error_type &&
+                  loginError.error_type[0] === 'incorrect_email_pwd_error'
+                "
                 class="input-login input-login-2"
-                type="password"
+                type="{{ pwdType }}"
                 placeholder="Password"
                 minlength="4"
+                name="password"
+                (input)="handleVisibility()"
+                (focus)="onPasswordFocus()"
+                (blur)="onPasswordBlur()"
                 required
-                oninput="handlePwdIcon('password','lock-img-field')"
               />
               <button
                 type="button"
                 class="icon-btn-login pwd-btn-pos"
-                onclick="showPassword('password') ;toggleVisibleIcon('lock-img-field')"
+                (click)="onShowPwd()"
               >
                 <img
                   id="lock-img-field"
-                  src="assets/icons/lock.svg"
+                  src="assets/icons/{{
+                    pwdVisibility ? pwdIconPathVisible : 'lock.svg'
+                  }}"
                   alt="Password"
                 />
               </button>
             </div>
-            <p id="passwordError"></p>
+
+            <p
+              id="passwordError"
+              class="hideError"
+              [class.showError]="
+                loginError.error_type &&
+                loginError.error_type[0] === 'incorrect_email_pwd_error'
+              "
+            >
+              {{
+                loginError.error_message !== null
+                  ? loginError.error_message[0]
+                  : ""
+              }}
+            </p>
           </div>
         </div>
         <div class="remember-line disp-flex ft-sz-400">
           <div class="remember-me disp-flex">
-            <img
-              id="checkbox-login"
-              src="assets/icons/checkboxUncheck.svg"
-              alt="check"
-              onclick="checkButton('checkbox-login','assets/icons/checkboxUncheck.svg','assets/icons/checkboxChecked.svg')"
-            />
+            <button
+              type="button"
+              class="check-remember"
+              (click)="handleRememberMe()"
+            >
+              <img id="checkbox-login" [src]="onRememberMe()" alt="check" />
+            </button>
             <span class="remember ft-sz-400">Remember me</span>
           </div>
           <span class="forgot-pwd">I forgot my password</span>
@@ -82,17 +137,29 @@
       </div>
 
       <div class="btn-line disp-flex">
-        <button type="submit" class="blue-btn log-guest-btn">Log in</button>
+        <button
+          type="submit"
+          [class.hover_effect]="email.valid && password.valid"
+          [disabled]="!password.valid || !email.valid"
+          [style.opacity]="!email.valid || !password.valid ? '0.75' : '1'"
+          class="blue-btn log-guest-btn"
+        >
+          Log in
+        </button>
         <a href="summary.html" class="white-btn log-guest-btn">Guest Log in</a>
       </div>
     </form>
     <div class="privacy-link-login">
-      <a class="links-login ft-sz-400" onclick="userAction('privacy_login')"
+      <a
+        class="links-login ft-sz-400"
+        routerLink="/account/privacy-policy"
+        (click)="handleIndex('offline-privacy-policy'); onresetValidation()"
         >Privacy Policy</a
       >
       <a
         class="links-login ft-sz-400 legal-notice"
-        onclick="userAction('legal_notice_login')"
+        (click)="handleIndex('offline-legal-notice'); onresetValidation()"
+        routerLink="/account/legal-notice"
         >Legal Notice</a
       >
     </div>

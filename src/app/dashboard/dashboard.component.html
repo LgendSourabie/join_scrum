@@ -1,8 +1,12 @@
 <app-side-navigation />
 <div class="right-side-section" id="right-side-section">
-  <app-nav-bar />
-  <app-submenu />
-  <!-- <router-outlet /> -->
-  <app-summary />
+  <app-nav-bar class="app-nav-bar" />
+  <router-outlet />
 </div>
-<div class="overlay"></div>
+<div class="overlay" (click)="onCloseSubMenu()" *ngIf="submenu_state"></div>
+<div class="overlay" (click)="onCloseProfile()" *ngIf="profile_state"></div>
+<div
+  class="overlay"
+  (click)="onCloseEditProfile()"
+  *ngIf="edit_profile_state"
+></div>

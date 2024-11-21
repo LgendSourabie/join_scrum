@@ -1,0 +1,49 @@
+<form autocomplete="off" #dialog>
+  <ul class="users">
+    <ng-container *ngFor="let subtask of subtasks; let i = index">
+      <li
+        class="d-flex profiles capitilize cursor-effect"
+        [class.highlightBorder]="subtask.description.length === 0"
+      >
+        <input
+          #inputSubtask="ngModel"
+          class="subtask-input"
+          type="text"
+          [(ngModel)]="subtask.description"
+          [disabled]="chosenIndex !== i"
+          name="subtasks-{{ i }}"
+          placeholder="Subtasks without description will not be considered"
+        />
+        <div>
+          <button
+            (click)="handleChosen(i); onDeleteSubtask('edit-delete-' + i, i)"
+          >
+            <img
+              id="edit-delete-{{ i }}"
+              class="btn-img"
+              src="assets/icons/{{
+                chosenIndex === i ? 'delete.svg' : 'editContact.svg'
+              }}"
+              alt=""
+            />
+          </button>
+          <button
+            (click)="
+              onDeleteSubtask('check-delete-' + i, i);
+              onUpdateSubtask('check-delete-' + i, i, subtask.description)
+            "
+          >
+            <img
+              id="check-delete-{{ i }}"
+              class="btn-img"
+              src="assets/icons/{{
+                chosenIndex === i ? 'subtasks_check.svg' : 'delete.svg'
+              }}"
+              alt=""
+            />
+          </button>
+        </div>
+      </li>
+    </ng-container>
+  </ul>
+</form>

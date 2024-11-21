@@ -1,0 +1,149 @@
+<header>
+  <div class="main-title">
+    <h1>board</h1>
+    <img
+      routerLink="/dashboard/task"
+      src="assets/icons/plus_add_task_mobile.svg"
+      alt=""
+    />
+  </div>
+  <div class="search-input">
+    <div>
+      <input
+        [(ngModel)]="search_input"
+        (input)="onSearchAllTask()"
+        type="text"
+        placeholder="Find Task by Title"
+        name="search-task"
+      />
+      <button>
+        <img src="assets/icons/search.svg" alt="" />
+      </button>
+    </div>
+    <button (click)="onAddNewTask()">
+      <span>Add task</span>
+      <img src="assets/icons/add_task.svg" alt="" />
+    </button>
+  </div>
+</header>
+<div cdkDropListGroup class="board-container">
+  <div class="single-board-task">
+    <div class="title">
+      <h2>To do</h2>
+      <button (click)="onAddNewTask()" class="close-mobile-add-task">
+        <img src="assets/icons/task_plus_button.svg" alt="" />
+      </button>
+      <button routerLink="/dashboard/task" class="open-mobile-add-task">
+        <img src="assets/icons/task_plus_button.svg" alt="" />
+      </button>
+    </div>
+
+    <div
+      cdkDropList
+      [cdkDropListData]="todo.tasks"
+      class="task-list"
+      (cdkDropListDropped)="drop($event)"
+    >
+      <div *ngIf="todo.tasks.length === 0" class="no-task">
+        <span>No tasks To do</span>
+      </div>
+      @for (item of todo.tasks; track item) {
+      <app-single-task
+        cdkDrag
+        (click)="onEditTask(); sendTask(item)"
+        [task]="item"
+      />
+      }
+    </div>
+  </div>
+
+  <div class="single-board-task">
+    <div class="title">
+      <h2>In progress</h2>
+      <button (click)="onAddNewTask()" class="close-mobile-add-task">
+        <img src="assets/icons/task_plus_button.svg" alt="" />
+      </button>
+      <button routerLink="/dashboard/task" class="open-mobile-add-task">
+        <img src="assets/icons/task_plus_button.svg" alt="" />
+      </button>
+    </div>
+    <div
+      cdkDropList
+      [cdkDropListData]="in_progress.tasks"
+      class="task-list"
+      (cdkDropListDropped)="drop($event)"
+    >
+      <div *ngIf="in_progress.tasks.length === 0" class="no-task">
+        <span>No tasks In progress</span>
+      </div>
+      @for (item of in_progress.tasks; track item) {
+      <app-single-task
+        cdkDrag
+        (click)="onEditTask(); sendTask(item)"
+        [task]="item"
+      />
+      }
+    </div>
+  </div>
+
+  <div class="single-board-task">
+    <div class="title">
+      <h2>Await feedback</h2>
+      <button (click)="onAddNewTask()" class="close-mobile-add-task">
+        <img src="assets/icons/task_plus_button.svg" alt="" />
+      </button>
+      <button routerLink="/dashboard/task" class="open-mobile-add-task">
+        <img src="assets/icons/task_plus_button.svg" alt="" />
+      </button>
+    </div>
+    <div
+      cdkDropList
+      [cdkDropListData]="await_feedback.tasks"
+      class="task-list"
+      (cdkDropListDropped)="drop($event)"
+    >
+      <div *ngIf="await_feedback.tasks.length === 0" class="no-task">
+        <span>No tasks Await feedback</span>
+      </div>
+      @for (item of await_feedback.tasks; track item) {
+      <app-single-task
+        cdkDrag
+        (click)="onEditTask(); sendTask(item)"
+        [task]="item"
+      />
+      }
+    </div>
+  </div>
+
+  <div class="single-board-task">
+    <div class="title">
+      <h2>Done</h2>
+    </div>
+
+    <div
+      cdkDropList
+      [cdkDropListData]="done.tasks"
+      class="task-list"
+      (cdkDropListDropped)="drop($event)"
+    >
+      <div *ngIf="done.tasks.length === 0" class="no-task">
+        <span>No tasks Done</span>
+      </div>
+      @for (item of done.tasks; track item) {
+      <app-single-task
+        cdkDrag
+        (click)="onEditTask(); sendTask(item)"
+        [task]="item"
+      />
+      }
+    </div>
+  </div>
+</div>
+
+@if (editTask) {
+<app-edit-task-status [task]="currentTask" />
+<div class="overlay" (click)="onEditTask()"></div>
+} @if (newTask) {
+<app-add-new-board-task />
+<div class="overlay newTask-overlay" (click)="onAddNewTask()"></div>
+}
