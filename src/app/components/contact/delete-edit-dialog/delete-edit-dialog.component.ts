@@ -1,3 +1,4 @@
+import { BoardService } from './../../board/board.service';
 import { ApiService } from './../../../services/api.service';
 import { Component, OnInit, inject } from '@angular/core';
 import { ContactNameInitialComponent } from '../shared/contact-name-initial/contact-name-initial.component';
@@ -26,7 +27,8 @@ export class DeleteEditDialogComponent implements OnInit {
 
   constructor(
     private contactService: ContactService,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private boardService: BoardService
   ) {}
 
   ngOnInit(): void {
@@ -55,6 +57,13 @@ export class DeleteEditDialogComponent implements OnInit {
     }
   }
 
+  onCloseEdit() {
+    const element = document.getElementById('mobile-edit') as HTMLElement;
+    if (element) {
+      element.classList.remove('slideIn');
+    }
+  }
+
   onResetEdit() {
     const element = document.getElementById('mobile-edit') as HTMLElement;
 
@@ -64,8 +73,9 @@ export class DeleteEditDialogComponent implements OnInit {
   }
 
   onEditContact() {
-    this.contactService.emitNewContactState();
+    this.contactService.emitNewContactState(true);
     this.onAddContact(false);
+    this.onCloseEdit();
   }
 
   onAddContact(value: boolean) {
@@ -78,16 +88,19 @@ export class DeleteEditDialogComponent implements OnInit {
     if (!this.token) {
       return;
     } else {
-      this.apiService
-        .deleteData('users/contacts/' + id + '/', this.token)
-        .subscribe({
-          next: () => {
-            console.log('contact successfully deleted');
-          },
-          error: (error) => {
-            console.log(error);
-          },
-        });
+      this.apiService.deleteData('contacts/' + id + '/', this.token).subscribe({
+        next: () => {
+          this.onCloseEdit();
+        },
+        complete: () => {
+          this.boardService.getUpdatedData();
+        },
+        error: (error) => {
+          console.log(error.error.message);
+
+          console.log('An error happened');
+        },
+      });
     }
   }
 }

@@ -1,17 +1,17 @@
-:host {
+.btn {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: orange;
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.1);
   width: 120px;
   height: 120px;
   aspect-ratio: 1 / 1;
-  border: 3px solid white;
-  border-radius: 50%;
   font-size: 47px;
+  border-radius: 50%;
+  border: 3px solid white;
   font-weight: 500;
   color: white;
-  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.1);
+  background-color: orange;
 }
 
 @media screen and (width<1280px) {
@@ -23,7 +23,7 @@
 }
 
 @media screen and (width<760px) {
-  :host {
+  .btn {
     height: 85px;
     width: 85px;
     aspect-ratio: 1 / 1;

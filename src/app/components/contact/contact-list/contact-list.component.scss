@@ -242,7 +242,7 @@
 
 .overlay-hidden {
   padding-block: 1rem;
-  background-color: #f6f7f8;
+  background-color: #ffffff;
   position: sticky;
   top: 0;
 }
@@ -259,6 +259,7 @@ li {
   > .name-initials {
     width: 42px;
     height: 42px;
+    aspect-ratio: 1 / 1;
     border-radius: 50%;
     border: 3px solid white;
     background-color: brown;
@@ -282,9 +283,9 @@ li {
   }
 }
 
-li:last-child {
-  padding-bottom: 3rem !important;
-}
+// li:last-child {
+//   padding-bottom: 3rem !important;
+// }
 
 .highlightBg {
   background-color: #2a3647;
@@ -352,7 +353,8 @@ li:last-child {
 
 .contacts-overview-container {
   width: 400px;
-  height: 100%;
+
+  height: calc(100% - 0.5rem) !important;
   box-shadow: 4px 0 6px 0 rgba(0, 0, 0, 0.08);
   overflow-y: auto;
 }
@@ -831,6 +833,12 @@ li:last-child {
   }
   .letter {
     margin-right: 1rem;
+  }
+}
+
+@media screen and (width<760px) {
+  .contacts-overview-container {
+    height: calc(100% - 100px) !important;
   }
 }
 @media screen and (width<600px) {

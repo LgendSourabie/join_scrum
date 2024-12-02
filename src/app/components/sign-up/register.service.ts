@@ -1,18 +1,13 @@
-import { Injectable } from '@angular/core';
+import { ErrorHandlingService } from './../../shared/error-handling.service';
+import { Injectable, inject } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { Registration } from './singup.interface';
-import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RegisterService {
-  private errorSignUpSubject = new BehaviorSubject<{
-    error_type: string[] | null;
-    error_message: string[] | null;
-  }>({ error_type: null, error_message: null });
-
-  errorSignUp$ = this.errorSignUpSubject.asObservable();
+  private errorHandlingService = inject(ErrorHandlingService);
 
   constructor(private apiService: ApiService) {}
 
@@ -22,7 +17,7 @@ export class RegisterService {
 
     this.apiService
       .postData(
-        'accounts/registration/',
+        'register/',
         {
           first_name: firstName,
           last_name: lastName || '',
@@ -33,23 +28,21 @@ export class RegisterService {
         this.apiService.getUnAuthHeaders()
       )
       .subscribe({
-        next: () => {
-          this.errorSignUpSubject.next({
-            error_type: null,
-            error_message: null,
-          });
+        next: (response) => {
+          this.handleResetSignUpError();
         },
         error: (error) => {
-          if (error.status === 400) {
-            console.log('error', error.error);
-            this.errorSignUpSubject.next(error.error);
-            return error.error;
-          } else if (error.status === 404) {
-            this.errorSignUpSubject.next(error.message);
-            return error.message;
-          }
+          this.errorHandlingService.emitError(error.error);
+          return error.error;
         },
       });
+  }
+
+  handleResetSignUpError() {
+    this.errorHandlingService.emitError({
+      error_type: [null],
+      error_message: [null],
+    });
   }
 
   getFirstLastName(name: string) {

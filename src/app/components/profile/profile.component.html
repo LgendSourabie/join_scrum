@@ -23,15 +23,11 @@
     </button>
     <div>
       <span class="name">
-        {{ getAccountInfos()[0] }}
-        {{ getAccountInfos()[1] }}</span
+        {{ getAccountInfos()[1] }}
+        {{ getAccountInfos()[0] }}</span
       >
       <span>{{ getAccountInfos()[2] }}</span>
-      <a
-        class="cursor-effect"
-        (click)="onToggleEditProfile(); onToggleProfile()"
-        >view account</a
-      >
+      <a class="cursor-effect" (click)="onViewProfile()">view account</a>
     </div>
   </main>
 </section>

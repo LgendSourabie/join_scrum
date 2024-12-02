@@ -41,7 +41,7 @@ export class EditOrAddContactComponent implements OnInit {
   }
 
   onOpenNewContact(val: boolean) {
-    this.contactService.emitNewContactState();
+    this.contactService.emitNewContactState(val);
     this.contactService.emitInitialPicture(val);
   }
 }

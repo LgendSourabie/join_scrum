@@ -141,9 +141,9 @@
 </div>
 
 @if (editTask) {
-<app-edit-task-status [task]="currentTask" />
-<div class="overlay" (click)="onEditTask()"></div>
+<app-edit-task-status />
+<div class="overlay" (click)="onCloseTask()"></div>
 } @if (newTask) {
 <app-add-new-board-task />
-<div class="overlay newTask-overlay" (click)="onAddNewTask()"></div>
+<div class="overlay newTask-overlay" (click)="onCloseTask()"></div>
 }

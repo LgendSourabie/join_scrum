@@ -26,6 +26,10 @@ body {
   }
 }
 
+.mat-datepicker-content-container {
+  z-index: 9999999;
+  position: relative;
+}
 .mat-datepicker-content {
   transform: translateX(-50%) !important;
 }

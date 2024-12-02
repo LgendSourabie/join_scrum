@@ -5,40 +5,87 @@
   <div class="d-flex add-contact-input-container">
     <input
       type="text"
-      minlength="2"
+      #nameInput="ngModel"
       [(ngModel)]="contactData.name"
       name="name"
       placeholder="Name"
+      pattern="^[A-Za-zäöüßÄÖÜ]{1,}(?: [A-Za-zäöüßÄÖÜ]+)*$"
       class="add-contact-input"
+      [class.highlightBorder]="errorContact.name"
       id="name-input"
       required
     />
     <img src="assets/icons/name.svg" alt="telephone-icon" />
+    <span class="error" [class.showError]="errorContact.name">
+      {{ errorContact.name ? errorContact.name[0] : "" }}
+    </span>
   </div>
   <div class="d-flex add-contact-input-container">
     <input
       type="email"
+      #emailInput="ngModel"
       placeholder="Email"
       [(ngModel)]="contactData.email"
       name="email"
       class="add-contact-input"
+      [class.highlightBorder]="errorContact.email"
       id="email-input"
       pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}"
       required
     />
     <img src="assets/icons/email.svg" alt="telephone-icon" />
+    <span class="error" [class.showError]="errorContact.email">
+      {{ errorContact.email ? errorContact.email[0] : "" }}
+    </span>
   </div>
+
   <div class="d-flex add-contact-input-container">
     <input
       type="tel"
       placeholder="Phone"
+      #telInput="ngModel"
       [(ngModel)]="contactData.telephone"
       name="telephone"
+      pattern="[0-9+ ]*"
+      minlength="6"
       class="add-contact-input"
+      [class.highlightBorder]="errorContact.telephone"
       id="telephone-input"
       required
     />
     <img src="assets/icons/telephone.svg" alt="telephone-icon" />
+    <span class="error" [class.showError]="errorContact.telephone">
+      {{ errorContact.telephone ? errorContact.telephone[0] : "" }}
+    </span>
   </div>
-  <app-cancel-create-button class="app-cancel-create-button" />
+  <div class="buttons-create-contact d-flex app-cancel-create-button">
+    <button
+      type="button"
+      class="btn btn-cancel"
+      (click)="onOpenNewContact(false)"
+    >
+      cancel
+    </button>
+    <button
+      type="submit"
+      class="btn btn-create"
+      [disabled]="!nameInput.valid || !emailInput.valid || !telInput.valid"
+      [class.hover_effect]="
+        nameInput.valid && emailInput.valid && telInput.valid
+      "
+      [style.opacity]="
+        !nameInput.valid || !emailInput.valid || !telInput.valid ? '0.75' : '1'
+      "
+    >
+      {{ newContact ? "Create contact" : "Save" }}
+    </button>
+  </div>
 </form>
+<app-confirmation-dialog
+  id="contact-success"
+  [text]="
+    newContact ? 'Contact created successfully' : 'Contact updated successfully'
+  "
+  [icon]="''"
+  class="init-slide"
+/>

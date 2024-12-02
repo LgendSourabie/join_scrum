@@ -45,13 +45,16 @@
         <div class="btn">
           <ng-container *ngFor="let initial of task.assigned_to; let i = index">
             <button
-              *ngIf="initial"
+              *ngIf="initial && i <= pagination - 1"
               [style.backgroundColor]="initial.color_pattern"
               class="btn-name-initials"
             >
               {{ onNameInitials(initial.name) }}
             </button>
           </ng-container>
+          <span *ngIf="task.assigned_to.length > pagination"
+            >+{{ task.assigned_to.length - pagination }} more</span
+          >
         </div>
         <img
           src="assets/icons/{{

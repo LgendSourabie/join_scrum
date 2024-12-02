@@ -1,5 +1,6 @@
 import {
   AfterViewInit,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   OnInit,
@@ -45,11 +46,14 @@ export class DateCategorySectionComponent implements AfterViewInit, OnInit {
   isEditingData: boolean = false;
   toEditTask: Task | null = null;
   errorCreateTask: {
-    title: string[] | null;
-    due_date: string[] | null;
-    category: string[] | null;
-    description: string[] | null;
-  } = { title: null, due_date: null, category: null, description: null };
+    title: string[] | null | undefined;
+    due_date: string[] | null | undefined;
+    category: string[] | null | undefined;
+  } = {
+    title: undefined,
+    due_date: undefined,
+    category: undefined,
+  };
 
   task = {
     date: '',
@@ -99,11 +103,9 @@ export class DateCategorySectionComponent implements AfterViewInit, OnInit {
     if (this.isEditingData) {
       this.task.date = data.due_date!;
       this.task.priority = data.priority!;
-
       setTimeout(() => {
         this.task.category = data.category!;
       });
-
       this.subtasks_list = data.subtasks!;
       this.onSelectPriority(this.task.priority);
     }
@@ -120,10 +122,11 @@ export class DateCategorySectionComponent implements AfterViewInit, OnInit {
 
   resetDateCategoryData() {
     this.task.date = '';
-    this.task.category = '';
     this.task.priority = 'medium';
     this.task.subtask_description = '';
     this.priorityName = 'medium';
+    this.subtasks_list = [];
+    this.taskService.emitCategory('');
   }
 
   private formatDateInput(event: Event): void {

@@ -2,8 +2,8 @@
   position: fixed;
   bottom: 105px;
   right: 30px;
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   border: none;
   background-color: #2a3647;
@@ -27,6 +27,6 @@
 
 @media (width<600px) {
   .scroll-to-top {
-    display: unset;
+    display: flex;
   }
 }

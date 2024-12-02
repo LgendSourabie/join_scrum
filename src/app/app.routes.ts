@@ -13,6 +13,8 @@ import { BoardComponent } from './components/board/board.component';
 import { OfflinePrivacyPolicyComponent } from './components/login/offline-privacy-policy/offline-privacy-policy.component';
 import { OfflineLegaleNoticeComponent } from './components/login/offline-legale-notice/offline-legale-notice.component';
 import { authGuard } from './components/interfaces/auth.guard';
+import { ResetPasswordRequestComponent } from './components/reset-password-request/reset-password-request.component';
+import { ResetPasswordConfirmComponent } from './components/reset-password-confirm/reset-password-confirm.component';
 
 export const routes: Routes = [
   { path: 'account/log-in', component: LoginComponent, title: 'Join | Log In' },
@@ -31,6 +33,16 @@ export const routes: Routes = [
     path: 'account/sign-up',
     component: SignUpComponent,
     title: 'Join | Sign Up',
+  },
+  {
+    path: 'account/reset-password-request',
+    component: ResetPasswordRequestComponent,
+    title: 'Join | Reset-Password-Request',
+  },
+  {
+    path: 'account/reset-password/:uid/:token',
+    component: ResetPasswordConfirmComponent,
+    title: 'Join | Reset-Password',
   },
   {
     path: 'dashboard',

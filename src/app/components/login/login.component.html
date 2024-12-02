@@ -7,7 +7,7 @@
         <button
           (click)="onresetValidation()"
           routerLink="/account/sign-up"
-          class="sign-up blue-btn"
+          class="sign-up blue-btn sign-up-btn"
         >
           Sign up
         </button>
@@ -63,7 +63,7 @@
               "
             >
               {{
-                loginError.error_message !== null
+                loginError.error_message && loginError.error_message[0] !== null
                   ? loginError.error_message[0]
                   : ""
               }}
@@ -114,7 +114,7 @@
               "
             >
               {{
-                loginError.error_message !== null
+                loginError.error_message && loginError.error_message[0] !== null
                   ? loginError.error_message[0]
                   : ""
               }}
@@ -123,16 +123,23 @@
         </div>
         <div class="remember-line disp-flex ft-sz-400">
           <div class="remember-me disp-flex">
-            <button
-              type="button"
-              class="check-remember"
-              (click)="handleRememberMe()"
+            <div class="session-remember">
+              <button
+                type="button"
+                class="check-remember"
+                (click)="handleRememberMe()"
+              >
+                <img id="checkbox-login" [src]="onRememberMe()" alt="check" />
+              </button>
+              <span class="remember ft-sz-400">Remember me</span>
+            </div>
+            <a
+              class="forgot-password"
+              (click)="onresetValidation()"
+              routerLink="/account/reset-password-request"
+              >I forgot my password</a
             >
-              <img id="checkbox-login" [src]="onRememberMe()" alt="check" />
-            </button>
-            <span class="remember ft-sz-400">Remember me</span>
           </div>
-          <span class="forgot-pwd">I forgot my password</span>
         </div>
       </div>
 
@@ -144,11 +151,14 @@
           [style.opacity]="!email.valid || !password.valid ? '0.75' : '1'"
           class="blue-btn log-guest-btn"
         >
-          Log in
+          {{ isLoading ? "Loading..." : "Log in" }}
         </button>
-        <a href="summary.html" class="white-btn log-guest-btn">Guest Log in</a>
+        <a (click)="onGuestLogin()" class="white-btn log-guest-btn">
+          {{ isLoading ? "Loading..." : "Guest Log in" }}</a
+        >
       </div>
     </form>
+
     <div class="privacy-link-login">
       <a
         class="links-login ft-sz-400"

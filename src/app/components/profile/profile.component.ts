@@ -31,7 +31,7 @@ export class ProfileComponent implements OnInit {
     this.firstName = this.accountData[0]?.first_name;
     this.lastName = this.accountData[0]?.last_name;
     this.email = this.accountData[0]?.email;
-    return [this.firstName, this.lastName, this.email];
+    return [this.lastName, this.firstName, this.email];
   }
 
   onToggleEditProfile() {
@@ -42,16 +42,19 @@ export class ProfileComponent implements OnInit {
     this.navBarService.emitProfileState();
   }
 
+  onViewProfile() {
+    this.onToggleEditProfile();
+    this.onToggleProfile();
+  }
+
   getNameInitials() {
     let name;
     if (this.accountData.length === 0) {
       name = 'Guest';
-    } else if (this.accountData.length === 1) {
+    } else {
       name = `${this.accountData[0]?.first_name} ${
         this.accountData[0]?.last_name ? this.accountData[0]?.last_name[0] : ''
       }`;
-    } else {
-      name = 'Host';
     }
     return this.moduleService.getNameInitials(name);
   }

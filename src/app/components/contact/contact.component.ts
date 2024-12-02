@@ -40,8 +40,15 @@ export class ContactComponent {
 
     this.contactService.selectedContact$.subscribe((contact) => {
       this.selectedContact = contact;
+      if (this.selectedContact === null) {
+        this.oldContact = this.selectedContact;
+        this.resetSlideIn();
+      }
 
-      if (this.selectedContact !== this.oldContact) {
+      if (
+        this.selectedContact !== this.oldContact &&
+        this.selectedContact !== null
+      ) {
         this.oldContact = this.selectedContact;
         this.openAddContact();
       }

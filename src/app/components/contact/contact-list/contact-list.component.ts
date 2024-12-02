@@ -16,7 +16,6 @@ import { HeadMobileComponent } from '../head-mobile/head-mobile.component';
 export class ContactListComponent implements OnInit {
   private contactService = inject(ContactService);
   private moduleService = inject(ModulesService);
-  private boardService = inject(BoardService);
 
   chosenLinkIndexGroup!: number;
   chosenLinkIndexContact!: number;
@@ -26,7 +25,7 @@ export class ContactListComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    this.boardService.userData$.subscribe((users) => {
+    this.moduleService.userData$.subscribe((users) => {
       this.contacts = users.map((user) => user.contacts).flat();
       this.groupedContact = this.groupContactByLetter(this.contacts);
     });
@@ -42,7 +41,7 @@ export class ContactListComponent implements OnInit {
   }
 
   onOpenNewContact(val: boolean) {
-    this.contactService.emitNewContactState();
+    this.contactService.emitNewContactState(val);
     this.contactService.emitInitialPicture(val);
   }
 
@@ -60,6 +59,10 @@ export class ContactListComponent implements OnInit {
 
   onChangeView(view: 'contact-list' | 'contact-infos') {
     this.contactService.emitHandleView(view);
+  }
+
+  handleResetContactError() {
+    this.contactService.resetContactError();
   }
 
   groupContactByLetter(contacts: Contact[]) {

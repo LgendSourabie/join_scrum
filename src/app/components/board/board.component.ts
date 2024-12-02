@@ -17,6 +17,7 @@ import { Task } from '../interfaces/api.interface';
 import { TaskService } from '../task/task.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ModulesService } from '../../services/modules.service';
 
 @Component({
   selector: 'app-board',
@@ -39,6 +40,7 @@ export class BoardComponent implements OnInit {
   private apiService = inject(ApiService);
   private boardService = inject(BoardService);
   private taskService = inject(TaskService);
+  private moduleService = inject(ModulesService);
 
   tasks: Task[] = [];
   editTask: boolean = false;
@@ -61,7 +63,7 @@ export class BoardComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    this.boardService.userData$.subscribe((users) => {
+    this.moduleService.userData$.subscribe((users) => {
       this.tasks = users.map((data) => data.tasks).flat();
 
       this.in_progress.tasks = this.tasks.filter(
@@ -131,24 +133,30 @@ export class BoardComponent implements OnInit {
       return;
     } else {
       this.apiService
-        .patchData('users/tasks/' + id + '/', { task_group: type }, this.token)
+        .patchData('tasks/' + id + '/', { task_group: type }, this.token)
         .subscribe({
-          next: () => {
-            console.log('task type successfully updated');
+          complete: () => {
+            this.boardService.getUpdatedData();
           },
           error: (error) => {
-            console.log(error);
+            console.log('An error happened');
           },
         });
     }
   }
 
   onEditTask() {
-    this.boardService.emitEditTaskState();
+    this.boardService.emitEditTaskState(true);
+    this.boardService.emitEditTaskData(false);
+  }
+
+  onCloseTask() {
+    this.boardService.emitEditTaskState(false);
+    this.boardService.newTaskState(false);
   }
 
   onAddNewTask() {
-    this.boardService.emitNewTaskState();
+    this.boardService.newTaskState(true);
   }
 
   sendTask(task: Task) {

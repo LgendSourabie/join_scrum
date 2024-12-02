@@ -54,10 +54,54 @@
       display: flex;
       justify-content: center;
       border-radius: 10px;
-      &:hover {
-        background-color: #33afe3;
-      }
     }
+  }
+}
+
+.hover_effect:hover {
+  background-color: #29abe2 !important;
+}
+
+.add-contact-input:valid:not(.highlightBorder) {
+  border-right: none;
+  border: 1px solid #29abe2 !important;
+}
+
+.init-slide {
+  left: 50%;
+  position: absolute;
+  transform: translate(-50%);
+  top: -50vh;
+}
+
+.slideIn {
+  animation: slideInConfirmation 500ms ease-in-out 1 normal both;
+}
+
+.error {
+  position: absolute;
+  bottom: -1.3rem;
+  font-size: 12px;
+  opacity: 0;
+  color: #ff8190;
+}
+
+.highlightBorder {
+  border: 1px solid #ff8190 !important;
+}
+
+.showError {
+  opacity: 1;
+}
+
+@keyframes slideInConfirmation {
+  0% {
+    top: -10%;
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 1;
+    top: 50%;
   }
 }
 
@@ -84,6 +128,13 @@
   }
 }
 
+@media screen and (width<400px) {
+  .buttons-create-contact {
+    > .btn {
+      font-size: 13px;
+    }
+  }
+}
 @media (width<=370px) {
   .add-contact-data-inputs {
     .buttons-create-contact {

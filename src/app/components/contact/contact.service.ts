@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ApiService } from '../../services/api.service';
 import { Contact } from '../interfaces/api.interface';
+import { BoardService } from '../board/board.service';
 
 @Injectable({
   providedIn: 'root',
@@ -22,6 +23,13 @@ export class ContactService {
   private changeInitialSubject = new BehaviorSubject<boolean>(false);
   initialAlternate$ = this.changeInitialSubject.asObservable();
 
+  private contactErrorSubject = new BehaviorSubject<{
+    name: string[] | null | undefined;
+    email: string[] | null | undefined;
+    telephone: string[] | null | undefined;
+  }>({ name: undefined, email: undefined, telephone: undefined });
+  errorCreateContact$ = this.contactErrorSubject.asObservable();
+
   private displayMobileSubject = new BehaviorSubject<
     'contact-list' | 'contact-infos'
   >('contact-list');
@@ -33,16 +41,19 @@ export class ContactService {
   newContact: boolean = false;
   token: string | null = null;
 
-  constructor(private apiService: ApiService) {}
+  constructor(
+    private apiService: ApiService,
+    private boardService: BoardService
+  ) {}
 
-  handleCreateContact(contactData: Contact) {
+  async handleCreateContact(contactData: Contact) {
     this.token = sessionStorage.getItem('token');
     if (!this.token) {
       return;
     } else {
       this.apiService
         .postData(
-          'users/contacts/',
+          'contacts/',
           {
             name: contactData.name,
             email: contactData.email,
@@ -51,17 +62,31 @@ export class ContactService {
 
           this.apiService.getAuthHeaders(this.token)
         )
-        .subscribe((response) => {});
+        .subscribe({
+          next: () => {
+            this.contactErrorSubject.next({
+              name: null,
+              email: null,
+              telephone: null,
+            });
+          },
+          complete: () => {
+            this.boardService.getUpdatedData();
+          },
+          error: (error) => {
+            this.contactErrorSubject.next(error.error);
+          },
+        });
     }
   }
-  handleUpdateContact(contactData: Contact, id: number) {
+  async handleUpdateContact(contactData: Contact, id: number) {
     this.token = sessionStorage.getItem('token');
     if (!this.token) {
       return;
     } else {
       this.apiService
         .putData(
-          'users/contacts/' + id + '/',
+          'contacts/' + id + '/',
           {
             name: contactData.name,
             email: contactData.email,
@@ -70,7 +95,39 @@ export class ContactService {
 
           this.token
         )
-        .subscribe((response) => {});
+        .subscribe({
+          complete: () => {
+            this.getUpdatedData().then(() => {
+              this.getUpdatedSingleContact(id);
+            });
+          },
+        });
+    }
+  }
+
+  resetContactError() {
+    this.contactErrorSubject.next({
+      name: undefined,
+      email: undefined,
+      telephone: undefined,
+    });
+  }
+
+  async getUpdatedData() {
+    this.token = sessionStorage.getItem('token');
+    if (this.token) {
+      this.boardService.fetchUserData('accounts/', this.token);
+    }
+  }
+
+  getUpdatedSingleContact(id: number) {
+    this.token = sessionStorage.getItem('token');
+    if (this.token) {
+      this.apiService.getData('contacts/' + id, this.token).subscribe({
+        next: (response) => {
+          this.selectedContactSubject.next(response.body);
+        },
+      });
     }
   }
 
@@ -78,9 +135,8 @@ export class ContactService {
     this.submenuStateSubject.next(value);
   }
 
-  emitNewContactState() {
-    this.newContact = !this.newContact;
-    this.newContactStateSubject.next(this.newContact);
+  emitNewContactState(val: boolean) {
+    this.newContactStateSubject.next(val);
   }
 
   emitAddContact(bool: boolean) {

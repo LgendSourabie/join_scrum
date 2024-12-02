@@ -5,6 +5,7 @@ import { User } from '../interfaces/api.interface';
 import { CommonModule, formatDate } from '@angular/common';
 import { BoardService } from '../board/board.service';
 import { DashboardService } from '../../dashboard/dashboard.service';
+import { ModulesService } from '../../services/modules.service';
 
 @Component({
   selector: 'app-summary',
@@ -23,11 +24,12 @@ export class SummaryComponent implements OnInit {
   numberUrgentTasks: number = 0;
   upcoming_deadline: string = new Date().toLocaleDateString();
   dashboardService = inject(DashboardService);
+  private moduleService = inject(ModulesService);
 
   constructor(private boardService: BoardService) {}
 
   ngOnInit(): void {
-    this.boardService.userData$.subscribe((data) => {
+    this.moduleService.userData$.subscribe((data) => {
       this.userData = data;
 
       this.getTaskInBoard(this.userData);
@@ -116,7 +118,9 @@ export class SummaryComponent implements OnInit {
     if (this.userData.length === 0) {
       return 'Guest';
     } else {
-      return this.userData[0]?.last_name.split(' ')[0];
+      return this.userData[0]?.last_name
+        ? this.userData[0]?.last_name.split(' ')[0]
+        : this.userData[0]?.first_name;
     }
   }
 

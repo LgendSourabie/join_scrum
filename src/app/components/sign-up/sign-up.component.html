@@ -218,12 +218,11 @@
         >Legal Notice</a
       >
     </div>
-    <button
-      type="button"
-      id="blue-btn-signup-success"
-      class="blue-btn-signup-success"
-    >
-      You signed up successfully
-    </button>
   </div>
 </section>
+<app-confirmation-dialog
+  id="sign-up-success"
+  [text]="'You signed up successfully'"
+  [icon]="''"
+  class="init-slide"
+/>

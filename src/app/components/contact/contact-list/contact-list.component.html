@@ -2,7 +2,9 @@
   <div class="overlay-hidden">
     <button
       class="add-new-contact"
-      (click)="onOpenNewContact(true); onAddContact(true)"
+      (click)="
+        onOpenNewContact(true); onAddContact(true); handleResetContactError()
+      "
     >
       Add new contact<img src="assets/icons/addNewContact.svg" />
     </button>

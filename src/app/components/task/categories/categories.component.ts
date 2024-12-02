@@ -23,7 +23,6 @@ export class CategoriesComponent implements OnInit {
   ngOnInit(): void {
     this.taskService.categories$.subscribe((category) => {
       this.categories = category;
-      console.log('Categories', this.categories);
     });
 
     this.taskService.openCategories$.subscribe((state) => {

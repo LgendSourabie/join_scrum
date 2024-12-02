@@ -238,7 +238,7 @@ header {
     display: none !important;
   }
   .main-title {
-    width: 90vw;
+    width: 100%;
     > img {
       display: block !important;
     }
@@ -266,5 +266,15 @@ header {
 
   .board-container {
     margin-bottom: 6rem;
+  }
+}
+
+@media (width>760px) and (width<855px) {
+  header {
+    max-width: 550px;
+    width: 90vw;
+    > .search-input {
+      width: 100%;
+    }
   }
 }

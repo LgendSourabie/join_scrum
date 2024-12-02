@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Category, Task } from '../interfaces/api.interface';
 import { ApiService } from '../../services/api.service';
+import { BoardService } from '../board/board.service';
 
 @Injectable({
   providedIn: 'root',
@@ -24,15 +25,21 @@ export class TaskService {
   isLoading$ = this.isLoadingSubject.asObservable();
   error$ = this.errorSubject.asObservable();
   taskCreateErrorSubject = new BehaviorSubject<{
-    title: string[] | null;
-    due_date: string[] | null;
-    category: string[] | null;
-    description: string[] | null;
-  }>({ title: null, due_date: null, category: null, description: null });
+    title: string[] | null | undefined;
+    due_date: string[] | null | undefined;
+    category: string[] | null | undefined;
+  }>({
+    title: undefined,
+    due_date: undefined,
+    category: undefined,
+  });
   errorCreateTask$ = this.taskCreateErrorSubject.asObservable();
   token: string | null = null;
 
-  constructor(private apiService: ApiService) {}
+  constructor(
+    private apiService: ApiService,
+    private boardService: BoardService
+  ) {}
 
   fetchCategories(endpoint: string, token: string) {
     this.isLoadingSubject.next(true);
@@ -54,6 +61,10 @@ export class TaskService {
     this.openContactSubject.next(this.open);
   }
 
+  closeAssignTo() {
+    this.openContactSubject.next(false);
+  }
+
   emitOpenCategories() {
     this.open = !this.open;
     this.openCategoriesSubject.next(this.open);
@@ -63,7 +74,7 @@ export class TaskService {
     this.openContactSubject.next(bool);
   }
 
-  emitTask(task: Task) {
+  emitTask(task: Task | null) {
     this.taskSubject.next(task);
   }
 
@@ -74,31 +85,26 @@ export class TaskService {
   async handleCreateTask(data: any) {
     this.token = sessionStorage.getItem('token');
 
-    console.log('TASK DATA', data);
-
     if (!this.token) {
       return;
     } else {
       this.apiService
         .postData(
-          'users/tasks/',
+          'tasks/',
 
           data,
           this.apiService.getAuthHeaders(this.token)
         )
         .subscribe({
           next: () => {
-            this.taskCreateErrorSubject.next({
-              title: null,
-              due_date: null,
-              category: null,
-              description: null,
-            });
+            this.onResetErrorState();
+          },
+          complete: () => {
+            this.boardService.getUpdatedData();
           },
           error: (error) => {
             if (error.status === 400) {
               this.taskCreateErrorSubject.next(error.error);
-
               return error.error;
             } else if (error.status === 404) {
               return error.error;
@@ -111,26 +117,22 @@ export class TaskService {
   async handleEditTask(data: any, id: number) {
     this.token = sessionStorage.getItem('token');
 
-    console.log('TASK DATA', data);
-
     if (!this.token) {
       return;
     } else {
       this.apiService
         .putData(
-          'users/tasks/' + id + '/',
+          'tasks/' + id + '/',
 
           data,
           this.token
         )
         .subscribe({
           next: () => {
-            this.taskCreateErrorSubject.next({
-              title: null,
-              due_date: null,
-              category: null,
-              description: null,
-            });
+            this.onResetErrorState();
+          },
+          complete: () => {
+            this.boardService.getUpdatedData();
           },
           error: (error) => {
             if (error.status === 400) {
@@ -150,7 +152,13 @@ export class TaskService {
       title: null,
       due_date: null,
       category: null,
-      description: null,
+    });
+  }
+  onInitializeErrorState() {
+    this.taskCreateErrorSubject.next({
+      title: undefined,
+      due_date: undefined,
+      category: undefined,
     });
   }
 }

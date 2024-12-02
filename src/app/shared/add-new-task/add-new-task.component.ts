@@ -6,6 +6,7 @@ import { BoardService } from '../../components/board/board.service';
 import { Form, FormsModule, NgForm } from '@angular/forms';
 import { TaskService } from '../../components/task/task.service';
 import { Task } from '../../components/interfaces/api.interface';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-add-new-task',
@@ -15,6 +16,7 @@ import { Task } from '../../components/interfaces/api.interface';
     TitleDescriptionSectionComponent,
     CommonModule,
     FormsModule,
+    ConfirmationDialogComponent,
   ],
   templateUrl: './add-new-task.component.html',
   styleUrl: './add-new-task.component.scss',
@@ -31,19 +33,33 @@ export class AddNewTaskComponent implements OnInit {
 
   token: string | null = null;
   toEditTask: Task | null = null;
+  editTask: boolean = false;
+  taskCreateError: {
+    title: string[] | null | undefined;
+    due_date: string[] | null | undefined;
+    category: string[] | null | undefined;
+  } = {
+    title: undefined,
+    due_date: undefined,
+    category: undefined,
+  };
 
   constructor(private boardService: BoardService) {}
 
   ngOnInit(): void {
-    this.taskService.onResetErrorState();
+    this.getUpdatedCategories();
 
     this.taskService.task$.subscribe((data) => {
       this.toEditTask = data;
     });
+
+    this.boardService.editTask$.subscribe((state) => {
+      this.editTask = state;
+    });
   }
 
   onCloseAddTask() {
-    this.boardService.emitNewTaskState();
+    this.boardService.newTaskState(false);
     this.titleDesc.resetTitleDescData();
     this.dateCategory.resetDateCategoryData();
     this.boardService.emitEditTaskData(false);
@@ -63,6 +79,7 @@ export class AddNewTaskComponent implements OnInit {
   }
 
   onCreateNewTask() {
+    const element = document.getElementById('task-success') as HTMLElement;
     const titleDescValues = this.titleDesc.getTitleDescData();
     const dateCategoryValues = this.dateCategory.getDateCategoryData();
 
@@ -78,17 +95,40 @@ export class AddNewTaskComponent implements OnInit {
       assigned_to_contact_ids: titleDescValues.assign_to,
     };
 
-    this.taskService.handleCreateTask(data).then((error) => {
-      console.log('ne', error);
+    this.taskService.handleCreateTask(data).then(() => {
+      this.taskService.errorCreateTask$.subscribe((error) => {
+        this.taskCreateError = error;
 
-      if (error !== undefined) {
-        this.titleDesc.resetTitleDescData();
-        this.dateCategory.resetDateCategoryData();
-      }
+        if (
+          this.taskCreateError.category !== undefined &&
+          this.taskCreateError.title !== undefined &&
+          this.taskCreateError.due_date !== undefined
+        ) {
+          if (
+            !this.taskCreateError.category &&
+            !this.taskCreateError.title &&
+            !this.taskCreateError.due_date
+          ) {
+            this.titleDesc.resetTitleDescData();
+            this.dateCategory.resetDateCategoryData();
+            this.confirmTaskCreation(element);
+            this.returnToBoard(element);
+          }
+          this.taskService.onInitializeErrorState();
+        }
+      });
     });
   }
 
+  getUpdatedCategories() {
+    this.token = sessionStorage.getItem('token');
+    if (this.token) {
+      this.taskService.fetchCategories('category_options/', this.token);
+    }
+  }
+
   onEditTask(id: number) {
+    const element = document.getElementById('task-success') as HTMLElement;
     const titleDescValues = this.titleDesc.getTitleDescData();
     const dateCategoryValues = this.dateCategory.getDateCategoryData();
 
@@ -99,18 +139,49 @@ export class AddNewTaskComponent implements OnInit {
       due_date: this.handleDateFormat(dateCategoryValues.date),
       priority: dateCategoryValues.priority,
       category: dateCategoryValues.category,
-      task_group: 'todo',
+      task_group: this.toEditTask?.task_group,
       task_subtasks: dateCategoryValues.subtasks,
       assigned_to_contact_ids: titleDescValues.assign_to,
     };
 
     this.taskService.handleEditTask(data, id).then((error) => {
-      console.log('ne', error);
+      this.taskService.errorCreateTask$.subscribe((error) => {
+        this.taskCreateError = error;
 
-      if (error !== undefined) {
-        this.titleDesc.resetTitleDescData();
-        this.dateCategory.resetDateCategoryData();
-      }
+        if (
+          this.taskCreateError.category !== undefined &&
+          this.taskCreateError.title !== undefined &&
+          this.taskCreateError.due_date !== undefined
+        ) {
+          if (
+            !this.taskCreateError.category &&
+            !this.taskCreateError.title &&
+            !this.taskCreateError.due_date
+          ) {
+            this.titleDesc.resetTitleDescData();
+            this.dateCategory.resetDateCategoryData();
+            this.confirmTaskCreation(element);
+            this.returnToBoard(element);
+          }
+
+          this.taskService.onInitializeErrorState();
+        }
+      });
     });
+  }
+
+  confirmTaskCreation(element: HTMLElement) {
+    if (element) {
+      element.classList.add('slideIn');
+    }
+  }
+
+  returnToBoard(element: HTMLElement) {
+    setTimeout(() => {
+      if (element) {
+        element.classList.remove('slideIn');
+        this.onCloseAddTask();
+      }
+    }, 1000);
   }
 }

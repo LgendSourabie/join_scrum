@@ -12,7 +12,7 @@
     >
       {{ task?.category }}
     </button>
-    <img (click)="onEditTask()" src="assets/icons/close.svg" alt="" />
+    <img (click)="onCloseTask()" src="assets/icons/close.svg" alt="" />
   </div>
   <h1>{{ task?.title }}</h1>
   <span class="overlaydiscription">{{ task?.description }}</span>
@@ -60,11 +60,14 @@
       <ng-container *ngFor="let subtask of task?.subtasks; let i = index">
         <li class="align-horizontally">
           <button
-            (click)="onSubtaskComplete(subtask.is_completed!, subtask.id!)"
+            (click)="
+              onSubtaskComplete(subtask.is_completed!, subtask.id!);
+              onCompleteSubtask(i)
+            "
           >
             <img
               class="cursor-effect"
-              id="checkbox"
+              id="checkbox-{{ i }}"
               src="assets/icons/{{
                 subtask.is_completed ? 'checkButton.svg' : 'checkbox.svg'
               }}"

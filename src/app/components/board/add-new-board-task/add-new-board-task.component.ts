@@ -10,7 +10,7 @@ import { BoardService } from '../board.service';
   templateUrl: './add-new-board-task.component.html',
   styleUrl: './add-new-board-task.component.scss',
 })
-export class AddNewBoardTaskComponent implements OnInit{
+export class AddNewBoardTaskComponent implements OnInit {
   newTask: boolean = false;
 
   constructor(private boardService: BoardService) {}
@@ -22,6 +22,6 @@ export class AddNewBoardTaskComponent implements OnInit{
   }
 
   onCloseAddTask() {
-    this.boardService.emitNewTaskState();
+    this.boardService.newTaskState(false);
   }
 }

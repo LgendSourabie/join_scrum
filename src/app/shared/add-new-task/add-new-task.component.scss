@@ -116,6 +116,28 @@ form {
   }
 }
 
+.init-slide {
+  left: 50%;
+  position: absolute;
+  transform: translate(-50%);
+  top: -50vh;
+}
+
+.slideIn {
+  animation: slideInConfirmation 500ms ease-in-out 1 normal both;
+}
+
+@keyframes slideInConfirmation {
+  0% {
+    top: -25%;
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 1;
+    top: 50%;
+  }
+}
+
 @media screen and (width<1140px) {
   .board_task {
     max-height: calc(100vh - 52px);

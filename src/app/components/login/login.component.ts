@@ -1,9 +1,13 @@
+import { ModulesService } from './../../services/modules.service';
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { FormsModule, NgForm, NgModel } from '@angular/forms';
-import { RouterLink, RouterStateSnapshot } from '@angular/router';
 import { LoginService } from './login.service';
 import { DashboardService } from '../../dashboard/dashboard.service';
+import { ApiService } from '../../services/api.service';
+import { RouterLink } from '@angular/router';
+import { RegisterService } from '../sign-up/register.service';
+import { GuestService } from '../../services/guest.service';
 
 @Component({
   selector: 'app-login',
@@ -21,13 +25,17 @@ export class LoginComponent implements OnInit {
   pwdIconPathVisible: string = 'visibility_off.svg';
   pwdType: string = 'password';
   checkedIcon: string = 'checkboxUncheck.svg';
+  isLoading: boolean = false;
   loginError: {
-    error_type: string[] | null;
-    error_message: string[] | null;
-  } = { error_type: null, error_message: null };
+    error_type: string[] | null[];
+    error_message: string[] | null[];
+  } = { error_type: [null], error_message: [null] };
 
   @ViewChild('email') emailInput!: NgModel;
   @ViewChild('password') pwdInput!: NgModel;
+
+  private moduleService = inject(ModulesService);
+  private guestService = inject(GuestService);
 
   loginData = {
     email: '',
@@ -37,14 +45,19 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private loginService: LoginService,
-    private dashboardService: DashboardService
+    private apiService: ApiService,
+    private dashboardService: DashboardService,
+    private registerService: RegisterService
   ) {}
 
   ngOnInit(): void {
     this.handleResetData();
-    this.loginService.loginError$.subscribe((value) => {
+    this.moduleService.loginError$.subscribe((value) => {
       this.loginError = value;
-      console.log('ERR', value);
+    });
+
+    this.moduleService.isLoadingLogin$.subscribe((state) => {
+      this.isLoading = state;
     });
   }
 
@@ -99,8 +112,12 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  onGuestLogin() {
+    this.guestService.handleGuestLogin();
+  }
+
   onresetValidation() {
-    this.loginService.handleErrorReset();
+    this.moduleService.onNoError();
   }
 
   handleResetData() {

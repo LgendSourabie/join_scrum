@@ -5,6 +5,7 @@ import { Task } from '../../interfaces/api.interface';
 import { ModulesService } from '../../../services/modules.service';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../../services/api.service';
+import { TaskService } from '../../task/task.service';
 
 @Component({
   selector: 'app-edit-task-status',
@@ -15,9 +16,10 @@ import { ApiService } from '../../../services/api.service';
 })
 export class EditTaskStatusComponent implements OnInit {
   private moduleService = inject(ModulesService);
+  private taskService = inject(TaskService);
   token: string | null = null;
 
-  @Input({ required: true }) task!: Task | null;
+  task!: Task | null;
   constructor(
     private apiService: ApiService,
     private boardService: BoardService
@@ -25,6 +27,10 @@ export class EditTaskStatusComponent implements OnInit {
 
   ngOnInit(): void {
     this.getUpdatedData();
+
+    this.taskService.task$.subscribe((currentTask) => {
+      this.task = currentTask;
+    });
   }
 
   getUpdatedData() {
@@ -35,7 +41,10 @@ export class EditTaskStatusComponent implements OnInit {
   }
 
   onEditTask() {
-    this.boardService.emitEditTaskState();
+    this.boardService.emitEditTaskState(true);
+  }
+  onCloseTask() {
+    this.boardService.emitEditTaskState(false);
   }
 
   getNameInitials(name: string) {
@@ -56,7 +65,25 @@ export class EditTaskStatusComponent implements OnInit {
 
           this.token
         )
-        .subscribe((response) => {});
+        .subscribe({
+          complete: () => {
+            this.getUpdatedData();
+          },
+        });
+    }
+  }
+
+  onCompleteSubtask(id: number) {
+    const element = document.getElementById('checkbox-' + id) as HTMLElement;
+
+    if (element) {
+      const src = element.getAttribute('src');
+
+      if (src === 'assets/icons/checkButton.svg') {
+        element.setAttribute('src', 'assets/icons/checkbox.svg');
+      } else {
+        element.setAttribute('src', 'assets/icons/checkButton.svg');
+      }
     }
   }
 }

@@ -2,6 +2,7 @@ import { Component, inject, Input, OnInit } from '@angular/core';
 import { ContactService } from '../../components/contact/contact.service';
 import { ApiService } from '../../services/api.service';
 import { BoardService } from '../../components/board/board.service';
+import { TaskService } from '../../components/task/task.service';
 
 @Component({
   selector: 'app-delete-edit-button',
@@ -19,7 +20,10 @@ export class DeleteEditButtonComponent implements OnInit {
   @Input({ required: true }) deleteRef!: { id: number; element: string };
   @Input({ required: true }) template: string = 'contact';
 
-  constructor(private apiService: ApiService) {}
+  constructor(
+    private apiService: ApiService,
+    private taskService: TaskService
+  ) {}
 
   ngOnInit(): void {
     this.boardService.editTask$.subscribe((state) => {
@@ -35,15 +39,18 @@ export class DeleteEditButtonComponent implements OnInit {
   }
 
   onEditContact() {
-    this.contactService.emitNewContactState();
+    this.contactService.emitNewContactState(true);
     this.onAddContact(false);
   }
 
   onEditTask() {
-    console.log('task');
-    this.boardService.emitEditTaskState();
-    this.boardService.emitNewTaskState();
+    this.boardService.emitEditTaskState(true);
+    this.boardService.newTaskState(true);
     this.boardService.emitEditTaskData(true);
+  }
+
+  handleResetContactError() {
+    this.contactService.resetContactError();
   }
 
   onDeleteContact() {
@@ -54,17 +61,29 @@ export class DeleteEditButtonComponent implements OnInit {
     } else {
       this.apiService
         .deleteData(
-          'users/' + this.deleteRef.element + '/' + this.deleteRef.id + '/',
+          this.deleteRef.element + '/' + this.deleteRef.id + '/',
           this.token
         )
         .subscribe({
           next: () => {
-            console.log('contact successfully deleted');
+            this.closeDeletedTaskEdition();
+          },
+          complete: () => {
+            this.boardService.getUpdatedData();
           },
           error: (error) => {
-            console.log(error);
+            console.log('An error happened!');
           },
         });
     }
+  }
+
+  closeDeletedTaskEdition() {
+    this.boardService.emitEditTaskState(false);
+    this.boardService.emitEditTaskData(false);
+  }
+
+  handelTaskErrorReset() {
+    this.taskService.onInitializeErrorState();
   }
 }

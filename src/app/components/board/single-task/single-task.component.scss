@@ -10,6 +10,7 @@
   cursor: pointer;
   user-select: none;
   padding-inline: 0.175rem;
+  padding-block: 1rem;
 }
 
 .overview {
@@ -131,6 +132,17 @@ b {
 
   .todocard {
     min-width: 271px;
+    max-width: 300px;
+  }
+}
+
+@media (width<=400px) {
+  .todocard {
+    max-width: 90vw;
+  }
+}
+@media (width<=325px) {
+  .todocard {
     max-width: 300px;
   }
 }

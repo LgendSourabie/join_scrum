@@ -14,6 +14,7 @@ export class SingleTaskComponent {
   private moduleService = inject(ModulesService);
 
   @Input({ required: true }) task!: Task;
+  pagination: number = 6;
 
   onNameInitials(name: string) {
     return this.moduleService.getNameInitials(name);

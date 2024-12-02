@@ -1,19 +1,23 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Registration } from './singup.interface';
 import { FormsModule, NgForm } from '@angular/forms';
 import { RegisterService } from './register.service';
 import { DashboardService } from '../../dashboard/dashboard.service';
+import { ConfirmationDialogComponent } from '../../shared/confirmation-dialog/confirmation-dialog.component';
+import { ErrorHandlingService } from '../../shared/error-handling.service';
 
 @Component({
   selector: 'app-sign-up',
   standalone: true,
-  imports: [RouterLink, FormsModule],
+  imports: [RouterLink, FormsModule, ConfirmationDialogComponent],
   templateUrl: './sign-up.component.html',
   styleUrl: './sign-up.component.scss',
 })
-export class SignUpComponent implements OnInit {
+export class SignUpComponent {
   private dashboardService = inject(DashboardService);
+  private errorHandlingService = inject(ErrorHandlingService);
+
   pwdVisibility: boolean = false;
   pwdIconPathVisible: string = 'visibility_off.svg';
   pwdType: string = 'password';
@@ -22,9 +26,9 @@ export class SignUpComponent implements OnInit {
   confirmPwdType: string = 'password';
   togglePolicy: boolean = false;
   errorSignUp: {
-    error_type: string[] | null;
-    error_message: string[] | null;
-  } = { error_type: null, error_message: null };
+    error_type: string[] | null[] | undefined;
+    error_message: string[] | null[] | undefined;
+  } = { error_type: undefined, error_message: undefined };
 
   registerData: Registration = {
     name: '',
@@ -33,13 +37,10 @@ export class SignUpComponent implements OnInit {
     confirm_password: '',
   };
 
-  constructor(private registerService: RegisterService) {}
-
-  ngOnInit(): void {
-    this.registerService.errorSignUp$.subscribe((values) => {
-      this.errorSignUp = values;
-    });
-  }
+  constructor(
+    private registerService: RegisterService,
+    private router: Router
+  ) {}
 
   handleVisibility(field: string, input: string) {
     if (input === 'password') {
@@ -104,13 +105,37 @@ export class SignUpComponent implements OnInit {
   }
 
   onSubmit(ngForm: NgForm) {
+    const element = document.getElementById('sign-up-success') as HTMLElement;
+
     if (ngForm.submitted && ngForm.form.valid) {
-      this.registerService.handleRegister(this.registerData).then((error) => {
-        if (error !== undefined) {
-          ngForm.resetForm();
-        }
+      this.registerService.handleRegister(this.registerData).then(() => {
+        this.errorHandlingService.errorSignUp$.subscribe((error) => {
+          this.errorSignUp = error;
+          if (this.errorSignUp.error_message !== undefined) {
+            if (!error.error_message || !error.error_message[0]) {
+              ngForm.resetForm();
+              this.confirmSignUp(element);
+              this.returnToLogin(element);
+            }
+          }
+        });
       });
     }
+  }
+
+  confirmSignUp(element: HTMLElement) {
+    if (element) {
+      element.classList.add('slideIn');
+    }
+  }
+
+  returnToLogin(element: HTMLElement) {
+    setTimeout(() => {
+      if (element) {
+        element.classList.remove('slideIn');
+        this.router.navigateByUrl('account/log-in');
+      }
+    }, 1000);
   }
 
   handleIndex(chosenMenu: string) {

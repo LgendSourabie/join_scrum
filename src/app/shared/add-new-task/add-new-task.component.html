@@ -18,7 +18,7 @@
           cancel
         </button>
         <button
-          *ngIf="!boardNewTask"
+          *ngIf="!editTask"
           (click)="onCreateNewTask()"
           class="btn btn-create"
         >
@@ -27,7 +27,8 @@
         <button
           (click)="onEditTask(toEditTask?.id!)"
           type="button"
-          *ngIf="boardNewTask"
+          [disabled]="!form.valid"
+          *ngIf="editTask"
           class="btn btn-create"
         >
           Save
@@ -36,3 +37,10 @@
     </div>
   </form>
 </section>
+
+<app-confirmation-dialog
+  id="task-success"
+  class="init-slide"
+  text="Task added to board"
+  icon="board_gray.svg"
+/>

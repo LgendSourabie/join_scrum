@@ -21,6 +21,7 @@ export class EditProfileComponent implements OnInit {
   @Input({ required: true }) id!: number;
 
   edit_profile_state: boolean = false;
+  token: string | null = null;
 
   constructor(private editProfileService: EditProfileService) {}
 
@@ -34,12 +35,25 @@ export class EditProfileComponent implements OnInit {
     this.navBarService.emitEditProfileState();
   }
 
+  onToggleProfile() {
+    this.navBarService.emitProfileState();
+  }
+
+  onSaveChanges() {
+    this.onToggleEditProfile();
+    this.onToggleProfile();
+  }
+
   onEditAccountData() {
-    const firstName = this.registerService.getFirstLastName(this.username)[0];
-    const lastName = this.registerService.getFirstLastName(this.username)[1];
-    console.log('fir', firstName, 'last', lastName);
-    const data = { name: `${lastName} ${firstName}` };
+    const lastName = this.registerService.getFirstLastName(this.username)[0];
+    const firstName = this.registerService.getFirstLastName(this.username)[1];
+
+    const data = {
+      name: lastName ? `${lastName} ${firstName}` : firstName,
+      email: this.email,
+    };
 
     this.editProfileService.handleEditAccount(data, this.id);
+    this.onSaveChanges();
   }
 }

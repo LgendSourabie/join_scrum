@@ -8,7 +8,9 @@
         id="first-bg"
         class="sub-menu-container disp-flex"
         routerLink="{{ link.path }}"
-        (click)="handleIndex(link.url); resetSelectedContact()"
+        (click)="
+          handleIndex(link.url); resetSelectedContact(); initializeState()
+        "
         [class.highlightBg]="chosenMenu === link.url"
       >
         <img

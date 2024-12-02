@@ -1,11 +1,14 @@
 <div class="edit-or-delete">
   @if(template==='contact'){
-  <button class="btn btn-edit" (click)="onEditContact()">
+  <button
+    class="btn btn-edit"
+    (click)="onEditContact(); handleResetContactError()"
+  >
     <img class="contact-edit" src="assets/icons/editContact.svg" />
     <span> Edit </span>
   </button>
   }@else if(template==='task') {
-  <button class="btn btn-edit" (click)="onEditTask()">
+  <button class="btn btn-edit" (click)="onEditTask(); handelTaskErrorReset()">
     <img class="contact-edit" src="assets/icons/editContact.svg" />
     <span> Edit </span>
   </button>

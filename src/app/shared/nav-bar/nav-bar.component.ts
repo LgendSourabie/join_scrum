@@ -29,9 +29,11 @@ export class NavBarComponent implements OnInit {
 
   constructor(private navBarService: NavBarService) {}
   ngOnInit(): void {
-    this.boardService.userData$.subscribe((data) => {
+    this.moduleService.userData$.subscribe((data) => {
       this.userData = data;
-      this.username = `${this.userData[0]?.first_name} ${this.userData[0]?.last_name}`;
+      this.username = this.userData[0]?.last_name
+        ? `${this.userData[0]?.last_name} ${this.userData[0]?.first_name}`
+        : this.userData[0]?.first_name;
     });
   }
 
@@ -44,7 +46,9 @@ export class NavBarComponent implements OnInit {
     if (this.userData.length === 0) {
       name = 'Guest';
     } else {
-      name = `${this.userData[0]?.last_name[0]} ${this.userData[0]?.first_name}`;
+      name = `${this.userData[0]?.first_name} ${
+        this.userData[0]?.last_name ? this.userData[0]?.last_name[0] : ''
+      }`;
     }
     return this.moduleService.getNameInitials(name);
   }

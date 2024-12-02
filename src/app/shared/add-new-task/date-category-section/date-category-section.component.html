@@ -1,5 +1,5 @@
 <div class="task-field">
-  <label for="due_date">due date <span>*</span></label>
+  <label>due date <span>*</span></label>
 
   <div class="picker-group">
     <input
@@ -24,12 +24,12 @@
       </mat-datepicker-actions>
     </mat-datepicker>
     <span class="error" [class.showError]="errorCreateTask.due_date">
-      This field is required
+      {{ errorCreateTask.due_date ? errorCreateTask.due_date[0] : "" }}
     </span>
   </div>
 </div>
 <div class="task-field">
-  <label class="prio-label" for="prio">prio</label>
+  <label class="prio-label">prio</label>
   <div class="priority">
     <ng-container *ngFor="let prio of priorities; let i = index">
       <button
@@ -74,7 +74,7 @@
       />
     </button>
     <span class="error" [class.showError]="errorCreateTask.category">
-      This field is required
+      {{ errorCreateTask.category ? errorCreateTask.category[0] : "" }}
     </span>
   </div>
   <app-categories />

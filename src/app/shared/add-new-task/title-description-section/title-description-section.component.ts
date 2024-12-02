@@ -31,11 +31,14 @@ export class TitleDescriptionSectionComponent implements OnInit {
   isEditingData: boolean = false;
   toEditTask: Task | null = null;
   errorCreateTask: {
-    title: string[] | null;
-    due_date: string[] | null;
-    category: string[] | null;
-    description: string[] | null;
-  } = { title: null, due_date: null, category: null, description: null };
+    title: string[] | null | undefined;
+    due_date: string[] | null | undefined;
+    category: string[] | null | undefined;
+  } = {
+    title: undefined,
+    due_date: undefined,
+    category: undefined,
+  };
 
   private modulesService = inject(ModulesService);
   private contactService = inject(ContactService);
@@ -64,15 +67,15 @@ export class TitleDescriptionSectionComponent implements OnInit {
       this.isEditingData = state;
     });
 
-    this.boardService.userData$.subscribe((data) => {
+    this.modulesService.userData$.subscribe((data) => {
       this.userData = data;
       this.contacts = data.map((user) => user.contacts).flat();
       this.all_contacts = data.map((user) => user.contacts).flat();
     });
 
-    this.contactService.assignContactArray$.subscribe(
-      (arr) => (this.assigned_to_contacts_list = arr)
-    );
+    this.contactService.assignContactArray$.subscribe((arr) => {
+      this.assigned_to_contacts_list = arr;
+    });
 
     this.taskService.task$.subscribe((data) => {
       this.toEditTask = data;
@@ -101,11 +104,8 @@ export class TitleDescriptionSectionComponent implements OnInit {
       this.task.title = data.title!;
       this.task.description = data.description!;
       this.assigned_to_contacts_list = data.assigned_to!;
-      console.log('data.assign_to', data.assigned_to);
     }
   }
-
-  editAssignToContacts(oldContactList: Contact[]) {}
 
   getTitleDescData() {
     return {
