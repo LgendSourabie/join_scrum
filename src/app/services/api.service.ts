@@ -1,14 +1,12 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ModulesService } from './modules.service';
-import { ActivatedRoute, Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
-  private URL = 'http://127.0.0.1:8000/api/';
+  private URL = 'https://join.ibrahima-sourabie-server.com/api/';
   private httpClient = inject(HttpClient);
 
   constructor() {}

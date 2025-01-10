@@ -12,7 +12,7 @@ export class GuestService {
   private moduleService = inject(ModulesService);
   private errorHandlingService = inject(ErrorHandlingService);
 
-  private URL = 'http://localhost:8000/api/';
+  private URL = 'https://join.ibrahima-sourabie-server.com/api/';
 
   constructor(
     private apiService: ApiService,
